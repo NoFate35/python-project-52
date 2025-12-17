@@ -13,4 +13,5 @@ collectstatic:
 migrate:
 	uv run manage.py migrate
 start:
+	sudo service postgresql start
 	uv run manage.py runserver
