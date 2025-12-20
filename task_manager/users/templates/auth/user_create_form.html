@@ -12,7 +12,8 @@
 
       </h1>
       
-<form method="post">
+<form action="{% url 'users_create' %}" method="post">
+
           {% csrf_token %}
 
           {% for field in form %}
@@ -27,7 +28,7 @@
                         <div class="mb-3"><label class="form-label" for="id_password1">Пароль</label><input type="password" name="password1" autocomplete="new-password" class="form-control" placeholder="Пароль" aria-describedby="id_password1_helptext" id="id_password1" aria-autocomplete="list"><div class="form-text"><ul><li>Ваш пароль должен содержать как минимум 3 символа.</li></ul></div>
 </div>
                   {% elif field.name == 'password2' %}
-                        <div class="mb-3"><label class="form-label" for="id_password2">Подтверждение пароля</label><input type="password" name="password2" autocomplete="new-password" class="form-control" placeholder="Подтверждение пароля" aria-describedby="id_password2_helptext" id="id_password2"><div class="form-text">Для подтверждения введите, пожалуйста, пароль ещё раз.</div>
+                        <div class="mb-3"><label class="form-label" for="id_password2">{{ form.password2.errors }}Подтверждение пароля</label><input type="password" name="password2" autocomplete="new-password" class="form-control" placeholder="Подтверждение пароля" aria-describedby="id_password2_helptext" id="id_password2"><div class="form-text">Для подтверждения введите, пожалуйста, пароль ещё раз.</div>
 </div>
                   {% endif %}
           {% endfor %}

@@ -8,13 +8,16 @@ from . forms import RegisterForm
 class UserListView(ListView):
     model = User
     template_name = "users/user_list.html"
-    query_string = User.objects.all()
+    context_object_name = 'users'
 
+    def get_queryset(self, *kwargs):
+        return User.objects.all()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
-    
+
+
 class UserFormView(BaseCreateView):
 
     def get(self, request, *args, **kwargs):
@@ -24,9 +27,14 @@ class UserFormView(BaseCreateView):
 
     def post(self, request, *args, **kwargs):
         form = RegisterForm(request.POST)
+        print('ffform', form.errors)
         if form.is_valid():
+            print('ffform', form.cleaned_data)
             password = form.cleaned_data.get('password1')
             password2 = form.cleaned_data.get('password2')
             if password == password2:
                 form.save()
-            return redirect('user_list')
+                return redirect('users_list')
+        return render (request, 'auth/user_create_form.html', {'form': form})
+
+        
