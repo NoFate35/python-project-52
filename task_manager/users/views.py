@@ -34,7 +34,7 @@ class UserFormView(BaseCreateView):
             password2 = form.cleaned_data.get('password2')
             if password == password2:
                 form.save()
-                return redirect('users_list')
+                return redirect('users_list')    
         return render (request, 'auth/user_create_form.html', {'form': form})
 
         
