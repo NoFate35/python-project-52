@@ -18,23 +18,47 @@
                   {% if field.name == 'first_name' %}
                         <div class="mb-3">
                               <label class="form-label" for="id_first_name">Имя</label>
-                              <input type="text" name="first_name" maxlength="150" class="form-control" {% if form.is_bound %}value="llllllllllll"{% endif %} placeholder="Имя" required="" id="id_first_name">
+                              {% if form.is_bound %}
+                                    <input type="text" name="first_name" maxlength="150" class="form-control is-valid" value="{{ field.value }}" required="" id="id_first_name">
+                              {% else %}
+                                    <input type="text" name="first_name" maxlength="150" class="form-control" placeholder="Имя" required="" id="id_first_name">
+                              {% endif %} 
+                              
                         </div>
                   {% elif field.name == 'last_name' %}
                         <div class="mb-3">
                               <label class="form-label" for="id_last_name">Фамилия</label>
-                              <input type="text" name="last_name" maxlength="150" class="form-control" placeholder="Фамилия" required="" id="id_last_name">
+                              {% if form.is_bound %}
+                                    <input type="text" name="last_name" maxlength="150" class="form-control is-valid" value="{{ field.value }}" required="" id="id_last_name">
+                              {% else %}
+                                    <input type="text" name="last_name" maxlength="150" class="form-control" placeholder="Фамилия" required="" id="id_last_name">
+                               {% endif %} 
                         </div>
                   {% elif field.name == 'username' %}
                         <div class="mb-3">
                               <label class="form-label" for="id_username">Имя пользователя</label>
-                              <input type="text" name="username" maxlength="150" autofocus="" class="form-control" placeholder="Имя пользователя" required="" aria-describedby="id_username_helptext" id="id_username">
+                              {% if form.is_bound %}
+                                    {% if form.username.errors %}
+                                          <input type="text" name="username" maxlength="150" autofocus="" class="form-control is-invalid" value="{{ field.value }}" required="" aria-describedby="id_username_helptext" id="id_username">
+                                          {% for error in form.username.errors %}
+                                                <div class="invalid-feedback">{{ error }}</div>
+                                          {% endfor %}
+                                    {% else %}
+                                          <input type="text" name="username" maxlength="150" autofocus="" class="form-control is-valid" value="{{ field.value }}" required="" aria-describedby="id_username_helptext" id="id_username">
+                                    {% endif %} 
+                              {% else %}
+                                    <input type="text" name="username" maxlength="150" autofocus="" class="form-control" placeholder="Имя пользователя" required="" aria-describedby="id_username_helptext" id="id_username">
+                              {% endif %} 
                               <div class="form-text">Обязательное поле. Не более 150 символов. Только буквы, цифры и символы @/./+/-/_.</div>
                         </div>
                   {% elif field.name == 'password1' %}
                         <div class="mb-3">
                               <label class="form-label" for="id_password1">Пароль</label>
-                              <input type="password" name="password1" autocomplete="new-password" class="form-control" placeholder="Пароль" aria-describedby="id_password1_helptext" id="id_password1" aria-autocomplete="list">
+                              {% if form.is_bound %}
+                                    <input type="password" name="password1" autocomplete="new-password" class="form-control is-valid" placeholder="Пароль" aria-describedby="id_password1_helptext" id="id_password1" aria-autocomplete="list">
+                              {% else %}
+                                    <input type="password" name="password1" autocomplete="new-password" class="form-control" placeholder="Пароль" aria-describedby="id_password1_helptext" id="id_password1" aria-autocomplete="list">
+                              {% endif %} 
                               <div class="form-text">
                                     <ul>
                                           <li>Ваш пароль должен содержать как минимум 3 символа.</li>
@@ -44,7 +68,16 @@
                   {% elif field.name == 'password2' %}
                         <div class="mb-3">
                               <label class="form-label" for="id_password2">Подтверждение пароля</label>
-                              <input type="password" name="password2" autocomplete="new-password" class="form-control" placeholder="Подтверждение пароля" aria-describedby="id_password2_helptext" id="id_password2">
+                              {% if form.is_bound %}
+                                    {% if form.password2.errors %}
+                                          <input type="password" name="password2" autocomplete="new-password" class="form-control is-invalid" placeholder="Подтверждение пароля" aria-describedby="id_password2_helptext" id="id_password2">
+                                                {% for error in form.password2.errors %}
+                                                      <div class="invalid-feedback">{{ error }}</div>
+                                                {% endfor %}
+                                    {% endif %}
+                              {% else %}
+                                    <input type="password" name="password2" autocomplete="new-password" class="form-control" placeholder="Подтверждение пароля" aria-describedby="id_password2_helptext" id="id_password2">
+                              {% endif %}
                               <div class="form-text">Для подтверждения введите, пожалуйста, пароль ещё раз.</div>
                         </div>
                   {% endif %}
