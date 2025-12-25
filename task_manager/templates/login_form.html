@@ -9,10 +9,25 @@
       </h1>
 <form action="{% url 'login' %}" method="post">
     {% csrf_token %}
+        {% if form.is_bound %}
+            <ul class="list-unstyled text-danger">
+                <li>Пожалуйста, введите правильные имя пользователя и пароль. Оба поля могут быть чувствительны к регистру.</li>
+            </ul>
+            {% for field in form %}
+                {% if field.name == 'username' %}
+                    <div class="mb-3">
+                        <label class="form-label" for="id_username">Имя пользователя</label>
+                        <input type="text" name="username" autofocus="" autocapitalize="none" autocomplete="username" maxlength="150" class="form-control is-valid" value="{{ field.value }}" required="" id="id_username">
+                    </div>
+                {% elif field.name == 'password' %}
+                    <div class="mb-3"><label class="form-label" for="id_password">Пароль</label>
+                        <input type="password" name="password" autocomplete="current-password" class="form-control is-valid" placeholder="Пароль" required="" id="id_password">
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% else %}
         {% for field in form %}
             {% if field.name == 'username' %}
-            {% if form.is_bound %}
-            {% endif %}
                 <div class="mb-3">
                     <label class="form-label" for="id_username">Имя пользователя</label>
                     <input type="text" name="username" autofocus="" autocapitalize="none" autocomplete="username" maxlength="150" class="form-control" placeholder="Имя пользователя" required="" id="id_username">
@@ -23,6 +38,7 @@
                 </div>
             {% endif %}
         {% endfor %}
+        {% endif %}
             <input class="btn btn-primary" type="submit" value="Войти">
 </form>
 
