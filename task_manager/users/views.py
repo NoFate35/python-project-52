@@ -22,19 +22,12 @@ class UserFormView(BaseCreateView):
 
     def get(self, request, *args, **kwargs):
         form = RegisterForm()
-        return render (request, 'auth/user_create_form.html', {'form': form})
+        return render (request, 'users/create_form.html', {'form': form})
 
 
     def post(self, request, *args, **kwargs):
         form = RegisterForm(request.POST)
-        print('ffform', form.errors)
         if form.is_valid():
-            print('ffform', form.cleaned_data)
-            password = form.cleaned_data.get('password1')
-            password2 = form.cleaned_data.get('password2')
-            if password == password2:
-                form.save()
-                return redirect('users_list')    
-        return render (request, 'auth/user_create_form.html', {'form': form})
-
-        
+            form.save()
+            return redirect('login')    
+        return render (request, 'users/create_form.html', {'form': form})

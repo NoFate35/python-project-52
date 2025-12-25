@@ -21,8 +21,9 @@ from django.views.generic.base import RedirectView
 from django.contrib.staticfiles.storage import staticfiles_storage
 
 urlpatterns = [
-    path("", views.IndexView.as_view()),
+    path("", views.IndexView.as_view(), name="home"),
     path("users/", include("task_manager.users.urls")),    
     path('admin/', admin.site.urls),
     path('favicon.ico', RedirectView.as_view(url=staticfiles_storage.url('favicon.ico'))),
+    path('login/', views.LoginUserView.as_view(), name="login"),
 ]
