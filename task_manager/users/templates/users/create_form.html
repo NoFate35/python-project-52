@@ -1,17 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-
             <div class="container wrapper flex-grow-1">
-      
-
-
       <h1 class="my-4">
-        
 Регистрация
-
       </h1>
-      
 <form action="{% url 'users_create' %}" method="post">
           {% csrf_token %}
           {% for field in form %}
@@ -22,8 +15,7 @@
                                     <input type="text" name="first_name" maxlength="150" class="form-control is-valid" value="{{ field.value }}" required="" id="id_first_name">
                               {% else %}
                                     <input type="text" name="first_name" maxlength="150" class="form-control" placeholder="Имя" required="" id="id_first_name">
-                              {% endif %} 
-                              
+                              {% endif %}            
                         </div>
                   {% elif field.name == 'last_name' %}
                         <div class="mb-3">
@@ -32,7 +24,7 @@
                                     <input type="text" name="last_name" maxlength="150" class="form-control is-valid" value="{{ field.value }}" required="" id="id_last_name">
                               {% else %}
                                     <input type="text" name="last_name" maxlength="150" class="form-control" placeholder="Фамилия" required="" id="id_last_name">
-                               {% endif %} 
+                              {% endif %} 
                         </div>
                   {% elif field.name == 'username' %}
                         <div class="mb-3">

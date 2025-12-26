@@ -1,7 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic.edit import BaseCreateView
 from django.views.generic import ListView
 from django.contrib.auth.models import User
+from django.views import View
 from . forms import RegisterForm
 
 
@@ -31,3 +32,17 @@ class UserFormView(BaseCreateView):
             form.save()
             return redirect('login')    
         return render (request, 'users/create_form.html', {'form': form})
+
+class UserFormUpdateView(View):
+     def get(self, request, *args, **kwargs):
+        user = get_object_or_404(User, id=kwargs["id"])
+        form = RegisterForm(instance=user)
+        return render(
+            request, 'users/create_form.html', {"form": form} )
+     def post(self, request, *args, **kwargs):
+         article = get_object_or_404(Article, id=kwargs["id"])
+         form = ArticleForm(request.POST, instance=article)
+         if form.is_valid():
+             form.save()
+             return redirect("article_list")
+         return render(request, "articles/form.html", {"form": form})

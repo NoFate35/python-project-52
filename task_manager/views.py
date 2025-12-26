@@ -3,6 +3,8 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView
 from django.urls import reverse
 from django.contrib import messages
+from django.contrib.auth import logout
+from django.http import HttpResponseRedirect
 
 
 class IndexView(TemplateView):
@@ -20,3 +22,8 @@ class LoginUserView(LoginView):
     def get_success_url(self):
         messages.add_message(self.request, messages.SUCCESS, 'Вы залогинены')
         return reverse('home')
+
+def logout_view(request):
+    messages.add_message(request, messages.INFO, 'Вы разлогинены')
+    logout(request)
+    return HttpResponseRedirect(reverse('home'))
