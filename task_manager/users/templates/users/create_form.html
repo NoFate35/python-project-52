@@ -1,11 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
-            <div class="container wrapper flex-grow-1">
-      <h1 class="my-4">
-Регистрация
-      </h1>
-<form action="{% url 'users_create' %}" method="post">
+            {% if form.instance.pk %}
+            <h1 class="my-4">Изменение пользователя</h1>
+            <form action="{% url 'users_update' form.instance.pk  %}" method="post">
+            {% else %}
+            <h1 class="my-4">Регистрация</h1>
+            <form action="{% url 'users_create' %}" method="post">
+            {% endif %}
+
           {% csrf_token %}
           {% for field in form %}
                   {% if field.name == 'first_name' %}
@@ -13,6 +16,8 @@
                               <label class="form-label" for="id_first_name">Имя</label>
                               {% if form.is_bound %}
                                     <input type="text" name="first_name" maxlength="150" class="form-control is-valid" value="{{ field.value }}" required="" id="id_first_name">
+                              {% elif form.instance.pk %}
+                                    <input type="text" name="first_name" maxlength="150" class="form-control is-valid" value="{{ form.instance.first_name }}" required="" id="id_first_name">
                               {% else %}
                                     <input type="text" name="first_name" maxlength="150" class="form-control" placeholder="Имя" required="" id="id_first_name">
                               {% endif %}            
@@ -22,6 +27,8 @@
                               <label class="form-label" for="id_last_name">Фамилия</label>
                               {% if form.is_bound %}
                                     <input type="text" name="last_name" maxlength="150" class="form-control is-valid" value="{{ field.value }}" required="" id="id_last_name">
+                              {% elif form.instance.pk %}
+                                    <input type="text" name="last_name" maxlength="150" class="form-control is-valid" value="{{ form.instance.last_name }}" required="" id="id_last_name">
                               {% else %}
                                     <input type="text" name="last_name" maxlength="150" class="form-control" placeholder="Фамилия" required="" id="id_last_name">
                               {% endif %} 
@@ -37,7 +44,16 @@
                                           {% endfor %}
                                     {% else %}
                                           <input type="text" name="username" maxlength="150" autofocus="" class="form-control is-valid" value="{{ field.value }}" required="" aria-describedby="id_username_helptext" id="id_username">
-                                    {% endif %} 
+                                    {% endif %}
+                              {% elif form.instance.pk %}
+                                    {% if form.username.errors %}
+                                          <input type="text" name="username" maxlength="150" autofocus="" class="form-control is-invalid" value="{{ field.value }}" required="" aria-describedby="id_username_helptext" id="id_username">
+                                          {% for error in form.username.errors %}
+                                                <div class="invalid-feedback">{{ error }}</div>
+                                          {% endfor %}
+                                    {% else %}
+                                          <input type="text" name="username" maxlength="150" autofocus="" class="form-control is-valid" value="{{ form.instance.username }}" required="" aria-describedby="id_username_helptext" id="id_username">
+                                    {% endif %}
                               {% else %}
                                     <input type="text" name="username" maxlength="150" autofocus="" class="form-control" placeholder="Имя пользователя" required="" aria-describedby="id_username_helptext" id="id_username">
                               {% endif %} 
@@ -66,6 +82,8 @@
                                                 {% for error in form.password2.errors %}
                                                       <div class="invalid-feedback">{{ error }}</div>
                                                 {% endfor %}
+                                    {% else %}
+                                          <input type="password" name="password2" autocomplete="new-password" class="form-control is-valid" placeholder="Подтверждение пароля" aria-describedby="id_password2_helptext" id="id_password2">
                                     {% endif %}
                               {% else %}
                                     <input type="password" name="password2" autocomplete="new-password" class="form-control" placeholder="Подтверждение пароля" aria-describedby="id_password2_helptext" id="id_password2">
@@ -74,8 +92,10 @@
                         </div>
                   {% endif %}
           {% endfor %}
-    <input class="btn btn-primary" type="submit" value="Зарегистрировать">
+      {% if form.instance.pk %}
+       <input class="btn btn-primary" type="submit" value="Изменить">
+      {% else %}
+      <input class="btn btn-primary" type="submit" value="Зарегистрировать">
+      {% endif %}
 </form>
-
-    </div>
     {% endblock %}

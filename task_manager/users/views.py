@@ -4,6 +4,7 @@ from django.views.generic import ListView
 from django.contrib.auth.models import User
 from django.views import View
 from . forms import RegisterForm
+from django.contrib import messages
 
 
 class UserListView(ListView):
@@ -35,14 +36,17 @@ class UserFormView(BaseCreateView):
 
 class UserFormUpdateView(View):
      def get(self, request, *args, **kwargs):
-        user = get_object_or_404(User, id=kwargs["id"])
+        user = get_object_or_404(User, pk=kwargs["pk"])
+        print('user', user.last_name)
         form = RegisterForm(instance=user)
         return render(
             request, 'users/create_form.html', {"form": form} )
+
      def post(self, request, *args, **kwargs):
-         article = get_object_or_404(Article, id=kwargs["id"])
-         form = ArticleForm(request.POST, instance=article)
+         user = get_object_or_404(User, pk=kwargs["pk"])
+         form = RegisterForm(request.POST, instance=user)
          if form.is_valid():
              form.save()
-             return redirect("article_list")
-         return render(request, "articles/form.html", {"form": form})
+             messages.add_message(request, messages.SUCCESS, 'Пользователь успешно изменен')
+             return redirect("users_list")
+         return render(request, "users/create_form.html", {"form": form})

@@ -57,9 +57,24 @@
       </div>
       {% endif %}
     </nav>
-    
+    <div class="container wrapper flex-grow-1">
+    {% if messages %}
+      {% for message in messages %}
+        {% if message.tags == "success" %} 
+          <div class="alert alert-success alert-dismissible fade show" role="alert">
+              {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% elif message.tags == "info" %}
+          <div class="alert alert-info alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endif %}
+      {% endfor %} 
+    {% endif %}
       {% block content %}{% endblock %}
-
+    </div>
     <footer>
       <div class="container my-5 pt-4 border-top">
         <a target="_blank" href="https://github.com/NoFate35">Ivan S.</a>
