@@ -1,11 +1,24 @@
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
 
 
 
 
-class RegisterForm(UserCreationForm):
+class RegisterUserForm(UserCreationForm):
 
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'username', 'password1', 'password2']
+
+class UpdateUserForm(RegisterUserForm):
+
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'username', 'password1', 'password2']
+    
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        print('uuusername', username)
+        #if self.request.user.username == username: 
+            #form.save() 
+            #return super().form_valid(form)

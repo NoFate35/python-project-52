@@ -3,7 +3,7 @@ from django.views.generic.edit import BaseCreateView
 from django.views.generic import ListView
 from django.contrib.auth.models import User
 from django.views import View
-from . forms import RegisterForm
+from . forms import RegisterUserForm, UpdateUserForm
 from django.contrib import messages
 
 
@@ -23,12 +23,12 @@ class UserListView(ListView):
 class UserFormView(BaseCreateView):
 
     def get(self, request, *args, **kwargs):
-        form = RegisterForm()
+        form = RegisterUserForm()
         return render (request, 'users/create_form.html', {'form': form})
 
 
     def post(self, request, *args, **kwargs):
-        form = RegisterForm(request.POST)
+        form = RegisterUserForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('login')    
@@ -38,15 +38,18 @@ class UserFormUpdateView(View):
      def get(self, request, *args, **kwargs):
         user = get_object_or_404(User, pk=kwargs["pk"])
         print('user', user.last_name)
-        form = RegisterForm(instance=user)
+        form = UpdateUserForm(instance=user)
         return render(
-            request, 'users/create_form.html', {"form": form} )
+            request, 'users/create_form.html', {"form": form})
+     
+
 
      def post(self, request, *args, **kwargs):
-         user = get_object_or_404(User, pk=kwargs["pk"])
-         form = RegisterForm(request.POST, instance=user)
-         if form.is_valid():
-             form.save()
-             messages.add_message(request, messages.SUCCESS, 'Пользователь успешно изменен')
-             return redirect("users_list")
-         return render(request, "users/create_form.html", {"form": form})
+        user = get_object_or_404(User, pk=kwargs["pk"])
+        form = UpdateUserForm(request.POST, instance=user)
+        username_errors = form.errors.get('username')
+        if form.is_valid():
+            form.save()
+            messages.add_message(request, messages.SUCCESS, 'Пользователь успешно изменен')
+            return redirect("users_list")
+        return render(request, "users/create_form.html", {"form": form})
