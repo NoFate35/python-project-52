@@ -18,7 +18,4 @@ class UpdateUserForm(RegisterUserForm):
     
     def clean_username(self):
         username = self.cleaned_data['username']
-        print('uuusername', username)
-        #if self.request.user.username == username: 
-            #form.save() 
-            #return super().form_valid(form)
+        return username
