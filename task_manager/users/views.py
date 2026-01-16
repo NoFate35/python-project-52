@@ -31,6 +31,7 @@ class UserFormView(BaseCreateView):
         form = RegisterUserForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.add_message(request, messages.SUCCESS, 'Пользователь успешно зарегистрирован')
             return redirect('login')    
         return render (request, 'users/create_form.html', {'form': form})
 
@@ -56,3 +57,22 @@ class UserFormUpdateView(View):
             messages.add_message(request, messages.SUCCESS, 'Пользователь успешно изменен')
             return redirect("users_list")
         return render(request, "users/create_form.html", {"form": form})
+
+class UserDeleteView(View):
+
+     def get(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            messages.add_message(request, messages.ERROR, 'Вы не авторизованы! Пожалуйста, выполните вход.')
+            return redirect("login")
+        user = get_object_or_404(User, pk=kwargs["pk"])
+        if request.user != user:
+            messages.add_message(request, messages.ERROR, 'У вас нет прав для изменения другого пользователя.')
+            return redirect("users_list")
+        return render(request, 'users/delete.html', {"user": user})
+     
+     def post(self, request, *args, **kwargs):
+        user = get_object_or_404(User, pk=kwargs["pk"])
+        if user:
+            user.delete()
+            messages.add_message(request, messages.SUCCESS, 'Пользователь успешно удален')
+            return redirect("users_list")
