@@ -17,5 +17,7 @@ class UpdateUserForm(RegisterUserForm):
         fields = ['first_name', 'last_name', 'username', 'password1', 'password2']
     
     def clean_username(self):
+        usernames = User.objects.only("username")
+        print('uuusernames', self.cleaned_data)
         username = self.cleaned_data['username']
         return username

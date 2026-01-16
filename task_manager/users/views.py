@@ -42,14 +42,15 @@ class UserFormUpdateView(View):
             messages.add_message(request, messages.ERROR, 'Вы не авторизованы! Пожалуйста, выполните вход.')
             return redirect("login")
         user = get_object_or_404(User, pk=kwargs["pk"])
+        if request.user != user:
+            messages.add_message(request, messages.ERROR, 'У вас нет прав для изменения другого пользователя.')
+            return redirect("users_list")
         form = UpdateUserForm(instance=user)
-        return render(
-            request, 'users/create_form.html', {"form": form})
+        return render(request, 'users/create_form.html', {"form": form})
      
      def post(self, request, *args, **kwargs):
         user = get_object_or_404(User, pk=kwargs["pk"])
         form = UpdateUserForm(request.POST, instance=user)
-        username_errors = form.errors.get('username')
         if form.is_valid():
             form.save()
             messages.add_message(request, messages.SUCCESS, 'Пользователь успешно изменен')
