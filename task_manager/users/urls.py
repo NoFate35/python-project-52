@@ -7,8 +7,3 @@ urlpatterns = [
     path("<int:pk>/update/", views.UserFormUpdateView.as_view(), name="users_update"),
     path("<int:pk>/delete/", views.UserDeleteView.as_view(), name="users_delete"),
 ]
-'''
-    
-    path("<int:id>/delete/", views.ArticleFormDeleteView.as_view(), name="article_delete"),
-    path("<int:id>/", views.ArticleDetailView.as_view(), name="article_detail"),
-'''
