@@ -50,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'task_manager.middleware.permission_middleware.PermissionMiddleware'
 ]
 
 ROOT_URLCONF = 'task_manager.urls'

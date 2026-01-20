@@ -39,13 +39,7 @@ class UserFormView(BaseCreateView):
 class UserFormUpdateView(View):
 
      def get(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            messages.add_message(request, messages.ERROR, 'Вы не авторизованы! Пожалуйста, выполните вход.')
-            return redirect("login")
         user = get_object_or_404(User, pk=kwargs["pk"])
-        if request.user != user:
-            messages.add_message(request, messages.ERROR, 'У вас нет прав для изменения другого пользователя.')
-            return redirect("users_list")
         form = UpdateUserForm(instance=user)
         return render(request, 'users/create_form.html', {"form": form})
      
@@ -61,13 +55,7 @@ class UserFormUpdateView(View):
 class UserDeleteView(View):
 
      def get(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            messages.add_message(request, messages.ERROR, 'Вы не авторизованы! Пожалуйста, выполните вход.')
-            return redirect("login")
         user = get_object_or_404(User, pk=kwargs["pk"])
-        if request.user != user:
-            messages.add_message(request, messages.ERROR, 'У вас нет прав для изменения другого пользователя.')
-            return redirect("users_list")
         return render(request, 'users/delete.html', {"user": user})
      
      def post(self, request, *args, **kwargs):
