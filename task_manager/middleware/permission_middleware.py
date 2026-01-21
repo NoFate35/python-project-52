@@ -20,6 +20,7 @@ class PermissionMiddleware:
     
     def process_view(self, request, view_func, view_args, view_kwargs):
         if ("Update" in str(view_func.__dict__)) or ("Delete" in str(view_func.__dict__)):
+            #если в имени запрашиваемой view есть Update либо Delete то проверка дальше
             if not request.user.is_authenticated:
                 messages.add_message(request, messages.ERROR, 'Вы не авторизованы! Пожалуйста, выполните вход.')
                 return redirect("login")
