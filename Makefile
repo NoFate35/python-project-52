@@ -15,5 +15,8 @@ migrate:
 start:
 	sudo service postgresql start
 	uv run manage.py runserver
+starta:
+	pg_ctl -D test -l logfile start
+	uv run manage.py runserver
 test:
 	uv run python3 manage.py test task_manager.users
