@@ -20,7 +20,7 @@ class UserListView(ListView):
         return context
 
 
-class UserFormView(BaseCreateView):
+class UserCreateView(BaseCreateView):
 
     def get(self, request, *args, **kwargs):
         form = RegisterUserForm()
