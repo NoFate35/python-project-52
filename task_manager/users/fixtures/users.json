@@ -13,7 +13,7 @@
  {"model": "auth.user", "pk": 2, "fields": 
     {"password": "pbkdf2_sha256$1200000$YISLfJ3tiCS1PkQIwSzEmi$ioAz6+6b7/R862hwXhvNI3hsKKugWtaIGew5wxPwq98=", 
     "last_login": null, 
-    "is_superuser": false, 
+    "is_superuser": false,
     "username": "uuu", 
     "first_name": "Егор", 
     "last_name": "Соколов", 
