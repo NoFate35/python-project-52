@@ -54,8 +54,10 @@ class UsersTest(TestCase):
 
     def test_status_update(self):
         status = Status.objects.filter(pk=2)[0]
+
         update_url = reverse("statuses_update", kwargs={'pk': status.id})
-        response = self.client.get(update_url, follow=True,)
+
+        response = self.client.get(update_url, follow=True)
         self.assertContains(response, 'Вы не авторизованы! Пожалуйста, выполните вход.')
 
         response = self.client.post(update_url, follow=True, data={"name": status.name + "!"})
