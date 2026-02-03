@@ -52,6 +52,27 @@ class UsersTest(TestCase):
         statuses = response.context["statuses"]
         self.assertTrue(len(statuses) == 4)
 
+    def test_status_update(self):
+        status = Status.objects.filter(pk=2)[0]
+        update_url = reverse("statuses_update", kwargs={'pk': status.id})
+        response = self.client.get(update_url, follow=True,)
+        self.assertContains(response, 'Вы не авторизованы! Пожалуйста, выполните вход.')
+
+        response = self.client.post(update_url, follow=True, data={"name": status.name + "!"})
+        self.assertContains(response, 'Вы не авторизованы! Пожалуйста, выполните вход.')
+        
+        user = User.objects.filter(pk="2")[0]
+        login_url = reverse("login")
+        response = self.client.post(login_url, follow=True, data={'username': user.username, 'password': '1234'})
+        self.assertContains(response, 'Вы залогинены')
+
+        response = self.client.get(update_url)
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post(update_url, follow=True, data={"name": status.name + "!"})
+        self.assertContains(response, 'Статус успешно изменен')
+        self.assertContains(response, 'Status2!')
+
 
 
 
