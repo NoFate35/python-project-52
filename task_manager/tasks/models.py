@@ -10,6 +10,3 @@ class Task(models.Model):
     author = models.ForeignKey(User, on_delete=models.PROTECT, related_name="authors")
     executor = models.ForeignKey(User, on_delete=models.PROTECT, related_name="executors")
     created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.name

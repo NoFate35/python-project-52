@@ -17,4 +17,4 @@ start:
 	sudo service postgresql start
 	uv run manage.py runserver
 test:
-	uv run python3 manage.py test task_manager.statuses
+	uv run python3 manage.py test task_manager.users.tests

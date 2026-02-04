@@ -1,3 +1,10 @@
 from django.test import TestCase
+from task_manager.statuses.models import Status
+from django.contrib.auth.models import User
 
-# Create your tests here.
+
+class TasksTest(TestCase):
+    fixtures = ["statuses.json", "users.json"]
+
+    def setUp(self):
+        self.user = User.objects.filter()
