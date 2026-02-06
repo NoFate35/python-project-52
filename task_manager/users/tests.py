@@ -10,6 +10,11 @@ class UsersTest(TestCase):
         self.list_url = reverse("users_list")
         self.create_url = reverse("users_create")
         self.login_url = reverse("login")
+        self.user1 = User.objects.get(username="rrr")
+        self.user2 = User.objects.get(pk="2")
+        self.user3 = User.objects.get(first_name="пупсик")
+        self.update_url1 = reverse("users_update", kwargs={'pk': self.user1.id})
+        self.update_url2 = reverse("users_update", kwargs={'pk': self.user2.id})
 
     def test_fixtures(self):
         user = User.objects.get(pk=1)
@@ -48,63 +53,65 @@ class UsersTest(TestCase):
         #по общему количеству
         users = response.context["users"]
         self.assertTrue(len(users) == 4)
-
+    
+    def make_login(self, user):
+        #логин под пользователем №1 (пароли у всех одинаковые)
+        response = self.client.post(self.login_url, follow=True, data={'username': user.username, 'password':'1234'})
+        self.assertContains(response, 'Вы залогинены')
     
     def test_bad_permission_middleware(self):
-        user = User.objects.filter(first_name="Егор")[0]
-        update_url = reverse("users_update", kwargs={'pk': user.id})
-        response = self.client.post(update_url, follow=True, data={"first_name": "Bobik", "last_name": 'Sokkkkk', 'username': 'bob-S', 'password1':'123', 'password2':'123'})
+        #отправка запроса на изменение пользователя, не будучи залогиненым
+        response = self.client.post(self.update_url1, follow=True, data={"first_name": "Bobik", "last_name": 'Sokkkkk', 'username': 'bob-S', 'password1':'123', 'password2':'123'})
         self.assertContains(response, 'Вы не авторизованы! Пожалуйста, выполните вход.')
 
-        
-        response = self.client.post(self.login_url, follow=True, data={'username': 'rrr', 'password':'1234'})
-        self.assertContains(response, 'Вы залогинены')
+        #логин под пользователем №1
+        self.make_login(self.user1)
 
-        user = User.objects.filter(first_name="пупсик")
-        delete_url = reverse("users_delete", kwargs={'pk': user[0].id})
+        #попытка изменить пользователя №3
+        delete_url = reverse("users_delete", kwargs={'pk': self.user3.id})
         response = self.client.post(delete_url, follow=True)
         self.assertContains(response, 'У вас нет прав для изменения другого пользователя.')
+    
+    def test_user_bad_update(self):
+        #логин под пользователем №2
+        self.make_login(self.user2)
+
+        #обновление с плохим паролем
+        response = self.client.post(self.update_url2, follow=True, data={"first_name": self.user2.first_name, "last_name": self.user2.last_name, 'username': 'egoska', 'password1':'12', 'password2':'12'})
+        self.assertContains(response, 'Введённый пароль слишком короткий. Он должен состоять из как минимум 3 символа.')
+    
 
     def test_user_update(self):
-        user = User.objects.filter(pk="2")[0]
+        #логин под пользователем №2
+        self.make_login(self.user2)
 
-        login_url = reverse("login")
-        response = self.client.post(login_url, follow=True, data={'username': user.username, 'password': '1234'})
-        self.assertContains(response, 'Вы залогинены')
-
-        update_url = reverse("users_update", kwargs={'pk': user.id})
-        response = self.client.get(update_url)
-
+        #отображение страницы формы
+        response = self.client.get(self.update_url2)
         self.assertEqual(response.status_code, 200)
-        response = self.client.post(update_url, follow=True, data={"first_name": user.first_name, "last_name": user.last_name, 'username': 'egoska', 'password1':'123', 'password2':'123'})
+
+        #запрос post на обновление
+        response = self.client.post(self.update_url2, follow=True, data={"first_name": self.user2.first_name, "last_name": self.user2.last_name, 'username': 'egoska', 'password1':'123', 'password2':'123'})
         self.assertContains(response, 'Пользователь успешно изменен')
         self.assertContains(response, 'egoska')
     
-    def test_user_bad_update(self):
-        user = User.objects.filter(pk="2")[0]
 
-        login_url = reverse("login")
-        response = self.client.post(login_url, follow=True, data={'username': user.username, 'password': '1234'})
-        self.assertContains(response, 'Вы залогинены')
 
-        update_url = reverse("users_update", kwargs={'pk': user.id})
-        response = self.client.post(update_url, follow=True, data={"first_name": user.first_name, "last_name": user.last_name, 'username': 'egoska', 'password1':'12', 'password2':'12'})
-        self.assertContains(response, 'Введённый пароль слишком короткий. Он должен состоять из как минимум 3 символа.')
 
-    def test_user_delete(self):
-        user = User.objects.filter(pk="2")[0]
+    def test_user_good_delete(self):
+    
+        self.make_login(self.user2)
 
-        login_url = reverse("login")
-        response = self.client.post(login_url, follow=True, data={'username': user.username, 'password': '1234'})
-        self.assertContains(response, 'Вы залогинены')
+        delete_url = reverse("users_delete", kwargs={'pk': self.user2.id})
 
-        delete_url = reverse("users_delete", kwargs={'pk': user.id})
+        #отображение страницы удаления
         response = self.client.get(delete_url)
         self.assertEqual(response.status_code, 200)
+
+        #post запрос на удаление
         response = self.client.post(delete_url, follow=True)
         self.assertContains(response, 'Пользователь успешно удален')
 
-        list_url = reverse("users_list")
-        response = self.client.get(list_url)
+        #по общему количеству
+        response = self.client.get(self.list_url)
         users = response.context["users"]
         self.assertTrue(len(users) == 2)
