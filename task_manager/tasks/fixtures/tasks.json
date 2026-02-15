@@ -1,0 +1,6 @@
+[{"model": "tasks.task", "pk": 1, "fields": 
+    {"name": "task1", 
+    "description": "deskription1",
+    "status": 1, 
+    "author": 1, 
+    "executor": 2}}]
