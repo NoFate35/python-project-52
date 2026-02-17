@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.views import View
 from . forms import RegisterUserForm, UpdateUserForm
 from django.contrib import messages
+from django.db.models.deletion import ProtectedError
 
 
 class UserListView(ListView):
@@ -61,6 +62,9 @@ class UserDeleteView(View):
      def post(self, request, *args, **kwargs):
         user = get_object_or_404(User, pk=kwargs["pk"])
         if user:
-            user.delete()
-            messages.add_message(request, messages.SUCCESS, 'Пользователь успешно удален')
+            try:
+                user.delete()
+                messages.add_message(request, messages.SUCCESS, 'Пользователь успешно удален')
+            except ProtectedError:
+                messages.add_message(request, messages.ERROR, 'Невозможно удалить пользователя, потому что он используется')
             return redirect("users_list")

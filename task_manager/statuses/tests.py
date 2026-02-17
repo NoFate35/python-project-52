@@ -111,27 +111,34 @@ class StatusesTest(TestCase):
         response = self.client.post(self.update_url, follow=True, data={"name": self.status2.name + "!"})
         self.assertContains(response, 'Статус успешно изменен')
         self.assertContains(response, 'status2!')
+    
 
+    def test_status_good_delete(self):
+    
+        self.make_login(self.user2)
 
+        delete_url = reverse("statuses_delete", kwargs={'pk': self.status2.id})
 
-
-'''
-    def test_user_delete(self):
-        user = User.objects.filter(pk="2")[0]
-
-        login_url = reverse("login")
-        response = self.client.post(login_url, follow=True, data={'username': user.username, 'password': '1234'})
-        self.assertContains(response, 'Вы залогинены')
-
-        delete_url = reverse("users_delete", kwargs={'pk': user.id})
+        #отображение страницы удаления
         response = self.client.get(delete_url)
         self.assertEqual(response.status_code, 200)
-        response = self.client.post(delete_url, follow=True)
-        self.assertContains(response, 'Пользователь успешно удален')
 
-        list_url = reverse("users_list")
-        response = self.client.get(list_url)
-        users = response.context["users"]
+        #post запрос на удаление
+        response = self.client.post(delete_url, follow=True)
+        self.assertContains(response, 'Статус успешно удален')
+
+        #по общему количеству
+        response = self.client.get(self.list_url)
+        users = response.context["statuses"]
         self.assertTrue(len(users) == 2)
 
-    '''
+
+    def test_status_bound_bad_delete(self):
+
+        self.make_login(self.user2)
+
+        delete_url = reverse("statuses_delete", kwargs={'pk': self.status1.id})
+
+        #post запрос на удаление пользователя который задействован
+        response = self.client.post(delete_url, follow=True)
+        self.assertContains(response, 'Невозможно удалить статус, потому что он используется')

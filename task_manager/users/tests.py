@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 
 class UsersTest(TestCase):
-    fixtures = ["users.json"]
+    fixtures = ["tasks.json", "users.json", "statuses.json"]
 
     def setUp(self):
         self.list_url = reverse("users_list")
@@ -35,6 +35,7 @@ class UsersTest(TestCase):
     def test_user_bad_create(self):
         response = self.client.post(self.create_url, data={"first_name": "Bobik", "last_name": 'S', 'username': 'bob-S', 'password1':'123', 'password2':'1234'})
         self.assertContains(response, 'Введенные пароли не совпадают.')
+
 
     def test_user_good_create(self):
         #отображение страницы регистрации
@@ -94,14 +95,22 @@ class UsersTest(TestCase):
         self.assertContains(response, 'Пользователь успешно изменен')
         self.assertContains(response, 'egoska')
     
+    def test_user_bound_bad_delete(self):
 
+        self.make_login(self.user2)
+
+        delete_url = reverse("users_delete", kwargs={'pk': self.user2.id})
+
+        #post запрос на удаление пользователя который задействован
+        response = self.client.post(delete_url, follow=True)
+        self.assertContains(response, 'Невозможно удалить пользователя, потому что он используется')
 
 
     def test_user_good_delete(self):
     
-        self.make_login(self.user2)
+        self.make_login(self.user3)
 
-        delete_url = reverse("users_delete", kwargs={'pk': self.user2.id})
+        delete_url = reverse("users_delete", kwargs={'pk': self.user3.id})
 
         #отображение страницы удаления
         response = self.client.get(delete_url)
