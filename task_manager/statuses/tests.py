@@ -115,7 +115,7 @@ class StatusesTest(TestCase):
 
     def test_status_good_delete(self):
     
-        self.make_login(self.user2)
+        self.make_login()
 
         delete_url = reverse("statuses_delete", kwargs={'pk': self.status2.id})
 
@@ -135,7 +135,7 @@ class StatusesTest(TestCase):
 
     def test_status_bound_bad_delete(self):
 
-        self.make_login(self.user2)
+        self.make_login()
 
         delete_url = reverse("statuses_delete", kwargs={'pk': self.status1.id})
 

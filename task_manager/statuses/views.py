@@ -6,6 +6,8 @@ from django.views import View
 from . forms import RegisterStatusForm, UpdateStatusForm
 from django.contrib import messages
 from django.db.models.deletion import ProtectedError
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 
 
 class StatusListView(ListView):
@@ -36,36 +38,36 @@ class StatusCreateView(BaseCreateView):
             return redirect('statuses_list')    
         return render (request, 'statuses/create_form.html', {'form': form})
 
-'''
-class UserFormUpdateView(View):
+
+class StatusFormUpdateView(View):
 
      def get(self, request, *args, **kwargs):
-        user = get_object_or_404(User, pk=kwargs["pk"])
-        form = UpdateUserForm(instance=user)
-        return render(request, 'users/create_form.html', {"form": form})
+        status = get_object_or_404(Status, pk=kwargs["pk"])
+        form = UpdateStatusForm(instance=status)
+        return render(request, 'statuses/create_form.html', {"form": form})
      
      def post(self, request, *args, **kwargs):
-        user = get_object_or_404(User, pk=kwargs["pk"])
-        form = UpdateUserForm(request.POST, instance=user)
+        status = get_object_or_404(Status, pk=kwargs["pk"])
+        form = UpdateStatusForm(request.POST, instance=status)
         if form.is_valid():
             form.save()
-            messages.add_message(request, messages.SUCCESS, 'Пользователь успешно изменен')
-            return redirect("users_list")
-        return render(request, "users/create_form.html", {"form": form})
+            messages.add_message(request, messages.SUCCESS, 'Статус успешно изменен')
+            return redirect("statuses_list")
+        return render(request, "statuses/create_form.html", {"form": form})
 
-class UserDeleteView(View):
+
+class StatusDeleteView(View):
 
      def get(self, request, *args, **kwargs):
-        user = get_object_or_404(User, pk=kwargs["pk"])
-        return render(request, 'users/delete.html', {"user": user})
+        status = get_object_or_404(Status, pk=kwargs["pk"])
+        return render(request, 'statuses/delete.html', {"status": status})
      
      def post(self, request, *args, **kwargs):
-        user = get_object_or_404(User, pk=kwargs["pk"])
-        if user:
+        status = get_object_or_404(Status, pk=kwargs["pk"])
+        if status:
             try:
-                user.delete()
-                messages.add_message(request, messages.SUCCESS, 'Пользователь успешно удален')
+                status.delete()
+                messages.add_message(request, messages.SUCCESS, 'Статус успешно удален')
             except ProtectedError:
-                messages.add_message(request, messages.ERROR, 'Невозможно удалить пользователя, потому что он используется')
-            return redirect("users_list")
-'''
+                messages.add_message(request, messages.ERROR, 'Невозможно удалить статус, потому что он используется')
+            return redirect("statuses_list")

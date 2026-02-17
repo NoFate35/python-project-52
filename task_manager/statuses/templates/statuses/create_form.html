@@ -1,20 +1,31 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1 class="my-4">
-        Создать статус
-    </h1>
-
-    <form action="{% url 'statuses_create' %}" method="post">
+        {% if form.instance.pk %}
+        <h1 class="my-4">Изменение статуса</h1>
+            <form action="{% url 'statuses_update' form.instance.pk  %}" method="post">
+        {% else %}
+            <h1 class="my-4">Создать статус</h1>
+            <form action="{% url 'statuses_create' %}" method="post">
+        {% endif %}
+    
         {% csrf_token %}
         {% for field in form %}
             {% if field.name == 'name' %}
                 <div class="mb-3">
                     <label class="form-label" for="id_name">Имя</label>
-                    <input type="text" name="name" maxlength="100" class="form-control" placeholder="Имя" required="" id="id_name">
+                    {% if form.instance.pk  %}
+                        <input type="text" name="name" maxlength="100" class="form-control" value="{{ form.instance.name }}" required="" id="id_name">
+                    {% else %}
+                        <input type="text" name="name" maxlength="100" class="form-control" placeholder="Имя" required="" id="id_name">
+                    {% endif %}  
                 </div>
             {% endif %}
         {% endfor %}
+    {% if form.instance.pk %}
+       <input class="btn btn-primary" type="submit" value="Изменить">
+    {% else %}
         <input class="btn btn-primary" type="submit" value="Создать">
+    {% endif %}
     </form>
 {% endblock %}
