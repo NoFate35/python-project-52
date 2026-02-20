@@ -20,12 +20,12 @@ class PermissionMiddleware:
     
     def process_view(self, request, view_func, view_args, view_kwargs):
         #если в имени запрашиваемой view есть Update либо Delete то проверка дальше
-        if ("UpdateView" in str(view_func.__dict__)) or ("DeleteView" in str(view_func.__dict__)):
-            #если пользователь не зарегистрирован
+        if ("UpdateView" in str(view_func.__dict__)) or ("DeleteView" in str(view_func.__dict__)) or ("StatusCreateView" in str(view_func.__dict__)):
+            #если пользователь не залогинен
             if not request.user.is_authenticated:
                 messages.add_message(request, messages.ERROR, 'Вы не авторизованы! Пожалуйста, выполните вход.')
                 return redirect("login")
-            # если пользователь зарегистрирован
+            # если пользователь залогинен
             else:
                 #если в имени запрашиваемой view есть UserUpdate либо UserDelete то проверка дальше
                 if ("UserFormUpdateView" in str(view_func.__dict__)) or ("UserDeleteView" in str(view_func.__dict__)):
