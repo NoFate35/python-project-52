@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 
 class StatusesTest(TestCase):
-    fixtures = ["statuses.json", "users.json"]
+    fixtures = ["statuses.json", "users.json", "tasks.json"]
 
     def setUp(self):
         self.status1 = Status.objects.get(pk=1)
@@ -48,6 +48,7 @@ class StatusesTest(TestCase):
         response = self.client.post(self.create_url, follow=True, data={"name": "status4"})
         self.assertContains(response, 'Вы не авторизованы! Пожалуйста, выполните вход.')
     
+    
     def test_status_bad_unique_create(self):
         #аутентификация
         self.make_login()
@@ -58,7 +59,7 @@ class StatusesTest(TestCase):
 
         #отправка запроса на создание такого же статуса
         response = self.client.post(self.create_url, follow=True, data={"name": "status4"})
-        self.assertContains(response, 'Task status с таким Имя уже существует.')
+        self.assertContains(response, 'Status с таким Name уже существует.')
 
 
     def test_status_good_create(self):
@@ -95,8 +96,8 @@ class StatusesTest(TestCase):
         self.make_login()
 
         #отправить post запрос на обновление с уже существующим именем статуса
-        response = self.client.post(self.update_url, follow=True, data={"name": self.status2.name})
-        self.assertContains(response, 'Task status с таким Имя уже существует.')
+        response = self.client.post(self.update_url, follow=True, data={"name": self.status1.name})
+        self.assertContains(response, 'Status с таким Name уже существует.')
 
 
     def test_status_good_update(self):

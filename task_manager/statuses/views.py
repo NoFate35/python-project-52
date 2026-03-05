@@ -34,8 +34,9 @@ class StatusCreateView(BaseCreateView):
         form = RegisterStatusForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.add_message(request, messages.SUCCESS, 'Статут успешно создан')
-            return redirect('statuses_list')    
+            messages.add_message(request, messages.SUCCESS, 'Статус успешно создан')
+            return redirect('statuses_list')
+        messages.add_message(request, messages.ERROR, 'Status с таким Name уже существует.')  
         return render (request, 'statuses/create_form.html', {'form': form})
 
 
@@ -53,6 +54,7 @@ class StatusFormUpdateView(View):
             form.save()
             messages.add_message(request, messages.SUCCESS, 'Статус успешно изменен')
             return redirect("statuses_list")
+        messages.add_message(request, messages.ERROR, 'Status с таким Name уже существует.')  
         return render(request, "statuses/create_form.html", {"form": form})
 
 
@@ -68,6 +70,6 @@ class StatusDeleteView(View):
             try:
                 status.delete()
                 messages.add_message(request, messages.SUCCESS, 'Статус успешно удален')
-            except ProtectedError:
+            except ProtectedError:    
                 messages.add_message(request, messages.ERROR, 'Невозможно удалить статус, потому что он используется')
             return redirect("statuses_list")
