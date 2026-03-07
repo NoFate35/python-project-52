@@ -5,7 +5,7 @@ from django import forms
 
 class RegisterStatusForm(forms.ModelForm):
 
-    name = forms.CharField(label="Имя", label_suffix="", initial="Имя")
+    name = forms.CharField(label="Имя", label_suffix="")
 
 
     class Meta:

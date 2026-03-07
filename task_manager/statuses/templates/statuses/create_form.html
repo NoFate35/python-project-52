@@ -10,7 +10,9 @@
         {% endif %}
     
         {% csrf_token %}
-                {{ form.as_div }}
+                <div class="mb-3">
+                    {{ form.as_div }}
+                </div>
     {% if form.instance.pk %}
        <input class="btn btn-primary" type="submit" value="Изменить">
     {% else %}
