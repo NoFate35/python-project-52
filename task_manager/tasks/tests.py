@@ -40,6 +40,6 @@ class TasksTest(TestCase):
         self.assertContains(response, 'Вы не авторизованы! Пожалуйста, выполните вход.')
 
     def test_task_bad_create(self):
-        response = self.client.post(self.create_url, data={"first_name": "Bobik", "last_name": 'S', 'username': 'bob-S', 'password1':'123', 'password2':'1234'})
-        self.assertContains(response, 'Введенные пароли не совпадают.')
+        response = self.client.post(self.create_url, data={"name": "task1", "status": '3'})
+        self.assertContains(response, 'Task с таким Name уже существует.')
     

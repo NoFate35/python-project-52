@@ -10,7 +10,16 @@
         {% endif %}
     
         {% csrf_token %}
-        {% for field in form %}
+                {{ form.as_div }}
+    {% if form.instance.pk %}
+       <input class="btn btn-primary" type="submit" value="Изменить">
+    {% else %}
+        <input class="btn btn-primary" type="submit" value="Создать">
+    {% endif %}
+    </form>
+{% endblock %}
+ <!--**
+ {% for field in form %}
             {% if field.name == 'name' %}
                 <div class="mb-3">
                     <label class="form-label" for="id_name">Имя</label>
@@ -22,10 +31,4 @@
                 </div>
             {% endif %}
         {% endfor %}
-    {% if form.instance.pk %}
-       <input class="btn btn-primary" type="submit" value="Изменить">
-    {% else %}
-        <input class="btn btn-primary" type="submit" value="Создать">
-    {% endif %}
-    </form>
-{% endblock %}
+**-->

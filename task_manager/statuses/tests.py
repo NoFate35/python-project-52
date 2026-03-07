@@ -59,7 +59,7 @@ class StatusesTest(TestCase):
 
         #отправка запроса на создание такого же статуса
         response = self.client.post(self.create_url, follow=True, data={"name": "status4"})
-        self.assertContains(response, 'Status с таким Name уже существует.')
+        self.assertContains(response, 'Task status с таким Имя уже существует.')
 
 
     def test_status_good_create(self):
