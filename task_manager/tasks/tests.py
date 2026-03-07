@@ -28,4 +28,18 @@ class TasksTest(TestCase):
         self.assertIn("tasks", response.context)
         tasks = response.context["tasks"]
         self.assertTrue(len(tasks) == 2)
+
+
+    def test_task_bad_authentificate_create(self):
+        #отобразить форму без аутентификации
+        response = self.client.get(self.create_url, follow=True)
+        self.assertContains(response, 'Вы не авторизованы! Пожалуйста, выполните вход.')
+
+        #отправить запрос post без аутентификации
+        response = self.client.post(self.create_url, follow=True, data={"name": "status4"})
+        self.assertContains(response, 'Вы не авторизованы! Пожалуйста, выполните вход.')
+
+    def test_task_bad_create(self):
+        response = self.client.post(self.create_url, data={"first_name": "Bobik", "last_name": 'S', 'username': 'bob-S', 'password1':'123', 'password2':'1234'})
+        self.assertContains(response, 'Введенные пароли не совпадают.')
     
