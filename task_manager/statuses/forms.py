@@ -3,9 +3,11 @@ from django import forms
 
 
 
-class RegisterStatusForm(forms.ModelForm):
+class StatusCreateForm(forms.ModelForm):
 
-    name = forms.CharField(label="Имя", label_suffix="")
+    name = forms.CharField(label="Имя", label_suffix="", error_messages={
+        'unique_together': " are not unique."
+        })
     auto_id=True
 
 
@@ -22,12 +24,16 @@ class RegisterStatusForm(forms.ModelForm):
                                                  'placeholder':"Имя",
                                                  'required':""
                                                  })
+
         if self.errors:
             self.fields['name'].widget.attrs.update({'class':"form-control is-invalid"})
+            print("str(self.errors['name']", str(self.errors))
+
+        #elif not self.errors and
 
 
 
-
+'''
 class UpdateStatusForm(forms.ModelForm):
 
     name = forms.CharField(label="Имя", label_suffix="")
@@ -50,3 +56,4 @@ class UpdateStatusForm(forms.ModelForm):
                                                  'required':"",
                                                  'id':"id_name"
                                                  })
+'''

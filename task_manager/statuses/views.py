@@ -3,7 +3,7 @@ from django.views.generic.edit import BaseCreateView
 from django.views.generic import ListView
 from task_manager.statuses.models import Status
 from django.views import View
-from . forms import RegisterStatusForm, UpdateStatusForm
+from . forms import StatusCreateForm
 from django.contrib import messages
 from django.db.models.deletion import ProtectedError
 from django.utils.decorators import method_decorator
@@ -26,12 +26,12 @@ class StatusListView(ListView):
 class StatusCreateView(BaseCreateView):
 
     def get(self, request, *args, **kwargs):
-        form = RegisterStatusForm()
+        form = StatusCreateForm()
         return render (request, 'statuses/create_form.html', {'form': form})
 
 
     def post(self, request, *args, **kwargs):
-        form = RegisterStatusForm(request.POST)
+        form = StatusCreateForm(request.POST)
         if form.is_valid():
             form.save()
             messages.add_message(request, messages.SUCCESS, 'Статус успешно создан')
@@ -45,12 +45,12 @@ class StatusFormUpdateView(View):
 
      def get(self, request, *args, **kwargs):
         status = get_object_or_404(Status, pk=kwargs["pk"])
-        form = UpdateStatusForm(instance=status)
+        form = StatusCreateForm(instance=status)
         return render(request, 'statuses/create_form.html', {"form": form})
      
      def post(self, request, *args, **kwargs):
         status = get_object_or_404(Status, pk=kwargs["pk"])
-        form = UpdateStatusForm(request.POST, instance=status)
+        form = StatusCreateForm(request.POST, instance=status)
         if form.is_valid():
             form.save()
             messages.add_message(request, messages.SUCCESS, 'Статус успешно изменен')
