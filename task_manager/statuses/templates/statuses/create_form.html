@@ -8,7 +8,6 @@
             <h1 class="my-4">Создать статус</h1>
             <form action="{% url 'statuses_create' %}" method="post">
         {% endif %}
-    
         {% csrf_token %}
                 <div class="mb-3">
                      {% for field in form %}
@@ -26,17 +25,3 @@
     {% endif %}
     </form>
 {% endblock %}
- <!--**
- {% for field in form %}
-            {% if field.name == 'name' %}
-                <div class="mb-3">
-                    <label class="form-label" for="id_name">Имя</label>
-                    {% if form.instance.pk  %}
-                        <input type="text" name="name" maxlength="100" class="form-control" value="{{ form.instance.name }}" required="" id="id_name">
-                    {% else %}
-                        <input type="text" name="name" maxlength="100" class="form-control" placeholder="Имя" required="" id="id_name">
-                    {% endif %}  
-                </div>
-            {% endif %}
-        {% endfor %}
-**-->

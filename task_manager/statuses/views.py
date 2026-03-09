@@ -36,8 +36,6 @@ class StatusCreateView(BaseCreateView):
             form.save()
             messages.add_message(request, messages.SUCCESS, 'Статус успешно создан')
             return redirect('statuses_list')
-        #print('fform.errors', form.errors.as_data())
-        #messages.add_message(request, messages.ERROR, 'Status с таким Name уже существует.')
         return render (request, 'statuses/create_form.html', {'form': form})
 
 
@@ -55,7 +53,6 @@ class StatusFormUpdateView(View):
             form.save()
             messages.add_message(request, messages.SUCCESS, 'Статус успешно изменен')
             return redirect("statuses_list")
-        messages.add_message(request, messages.ERROR, 'Status с таким Name уже существует.')  
         return render(request, "statuses/create_form.html", {"form": form})
 
 

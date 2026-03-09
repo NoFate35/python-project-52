@@ -12,6 +12,7 @@ class StatusesTest(TestCase):
         self.user2 = User.objects.get(pk=2)
         self.statuses = Status.objects.all()
         self.status2 = Status.objects.get(pk=2)
+        self.status3 = Status.objects.get(pk=3)
         self.update_url = reverse("statuses_update", kwargs={'pk': self.status2.id})
         self.create_url = reverse("statuses_create")
         self.list_url = reverse("statuses_list")
@@ -97,7 +98,7 @@ class StatusesTest(TestCase):
 
         #отправить post запрос на обновление с уже существующим именем статуса
         response = self.client.post(self.update_url, follow=True, data={"name": self.status1.name})
-        self.assertContains(response, 'Status с таким Name уже существует.')
+        self.assertContains(response, 'Task status с таким Имя уже существует.')
 
 
     def test_status_good_update(self):
@@ -118,7 +119,7 @@ class StatusesTest(TestCase):
     
         self.make_login()
 
-        delete_url = reverse("statuses_delete", kwargs={'pk': self.status2.id})
+        delete_url = reverse("statuses_delete", kwargs={'pk': self.status3.id})
 
         #отображение страницы удаления
         response = self.client.get(delete_url)
