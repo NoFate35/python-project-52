@@ -8,7 +8,7 @@ class TasksTest(TestCase):
     fixtures = ["tasks.json", "users.json", "statuses.json"]
 
     def setUp(self):
-        self.list_url = self.list_url = reverse("tasks_list")
+        self.list_url = reverse("tasks_list")
         self.task1 = Task.objects.get(name='task1')
         self.task2 = Task.objects.get(name='task2')
         self.tasks = Task.objects.all()
@@ -20,7 +20,7 @@ class TasksTest(TestCase):
         self.delete2_url = reverse("tasks_delete", kwargs={'pk': self.task2.id})
     
     def test_fixtures(self):
-        #проверка статуса по названию, запрос из базы
+        #проверка задачи по названию, запрос из базы
         self.assertEqual(self.task1.name, "task1")
         #по общему количеству, запрос из базы
         self.assertEqual(len(self.tasks), 2)
@@ -44,7 +44,6 @@ class TasksTest(TestCase):
 
 
     def test_tasks_good_show(self):
-
         #логин под пользователем 2
         self.make_login()
 
@@ -66,7 +65,7 @@ class TasksTest(TestCase):
         response = self.client.post(self.create_url, data={"name": "task3", "status": '2'})
         self.assertContains(response, 'Вы не авторизованы! Пожалуйста, выполните вход.')
 
-        #отобразить форму просмотра без аутентификации
+        #отобразить страницу просмотра без аутентификации
         response = self.client.get(self.show1_url, follow=True)
         self.assertContains(response, 'Вы не авторизованы! Пожалуйста, выполните вход.')
 
@@ -141,8 +140,13 @@ class TasksTest(TestCase):
         self.make_login()
 
         #отправка запроса формы обновления
-        response = self.client.get(self.update_url)
+        response = self.client.get(self.update1_url)
         self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Изменить')
+
+        #просмотр задачи
+        response = self.client.get(self.show1_url)
+        self.assertContains(response, 'task1')
 
         #отправка запроса post на обновление
         response = self.client.post(self.update1_url, follow=True, data={"name": 'task1update', 'status': self.task1.status})
@@ -156,14 +160,14 @@ class TasksTest(TestCase):
         response = self.client.get(self.list_url)
         self.assertContains(response, "task1update")
 
-    def test_status_good_delete(self):
-        
+    def test_task_good_delete(self):
         #аутентификация под пользователем 2
         self.make_login()
 
         #отображение страницы удаления
         response = self.client.get(self.delete2_url)
         self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Да, удалить')
 
         #post запрос на удаление
         response = self.client.post(self.delete2_url, follow=True)
@@ -179,9 +183,18 @@ class TasksTest(TestCase):
         #аутентификация под пользователем 2
         self.make_login()
 
+        #запрос на удаление задачи другого автора
         delete_url = reverse("tasks_delete", kwargs={'pk': self.task1.id})
 
         #post запрос на удаление задачи другого автора
         response = self.client.post(delete_url, follow=True)
         self.assertContains(response, 'Задачу может удалить только ее автор')
-    
+
+'''
+    def test_task_filter_list(self):
+        #отображение списка пользователей
+        response = self.client.get(self.list_url, data={"status": "", "executor": '', 'label':''})
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Показать')
+'''
+
