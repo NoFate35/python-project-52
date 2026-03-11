@@ -29,6 +29,17 @@ class TasksTest(TestCase):
     def make_login(self):
         response = self.client.post(self.login_url, follow=True, data={'username': self.user2.username, 'password': '1234'})
         self.assertContains(response, 'Вы залогинены')
+    
+    def test_main_manu(self):
+        #запрос главной страницы без логина
+        response = self.client.get(reverse('home'))
+        self.assertNotContains(response, 'Задачи')
+
+        #логин
+        self.make_login()
+        #запрос главной страницы под логин пользователя
+        response = self.client.get(reverse('home'))
+        self.assertContains(response, 'Задачи')
 
     
     def test_tasks_list(self):
