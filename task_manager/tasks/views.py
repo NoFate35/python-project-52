@@ -1,3 +1,4 @@
+'''
 from django.shortcuts import render
 
 class StatusListView(ListView):
@@ -61,3 +62,4 @@ class StatusDeleteView(View):
             except ProtectedError:    
                 messages.add_message(request, messages.ERROR, 'Невозможно удалить статус, потому что он используется')
             return redirect("statuses_list")
+'''
