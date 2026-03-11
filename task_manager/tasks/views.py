@@ -1,65 +1,69 @@
-'''
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic.edit import BaseCreateView
+from django.views.generic import ListView
+from task_manager.tasks.models import Task
+from django.views import View
+from . forms import TaskCreateForm
+from django.contrib import messages
+from django.db.models.deletion import ProtectedError
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 
-class StatusListView(ListView):
-    model = Status
-    template_name = "statuses/status_list.html"
-    context_object_name = 'statuses'
+class TaskListView(ListView):
+    model = Task
+    template_name = "tasks/task_list.html"
+    context_object_name = 'tasks'
 
     def get_queryset(self, *kwargs):
-        return Status.objects.all()
+        return Task.objects.all()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
 
 
-class StatusCreateView(BaseCreateView):
+class TaskCreateView(BaseCreateView):
 
     def get(self, request, *args, **kwargs):
-        form = StatusCreateForm()
-        return render (request, 'statuses/create_form.html', {'form': form})
+        form = TaskCreateForm()
+        return render (request, 'tasks/create_form.html', {'form': form})
 
 
     def post(self, request, *args, **kwargs):
-        form = StatusCreateForm(request.POST)
+        form = TaskCreateForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.add_message(request, messages.SUCCESS, 'Статус успешно создан')
-            return redirect('statuses_list')
-        return render (request, 'statuses/create_form.html', {'form': form})
+            messages.add_message(request, messages.SUCCESS, 'Задача успешно создана')
+            return redirect('tasks_list')
+        return render (request, 'tasks/create_form.html', {'form': form})
 
 
-class StatusFormUpdateView(View):
+class TaskFormUpdateView(View):
 
      def get(self, request, *args, **kwargs):
-        status = get_object_or_404(Status, pk=kwargs["pk"])
-        form = StatusCreateForm(instance=status)
-        return render(request, 'statuses/create_form.html', {"form": form})
+        task = get_object_or_404(Task, pk=kwargs["pk"])
+        form = TaskCreateForm(instance=task)
+        return render(request, 'task/create_form.html', {"form": form})
      
      def post(self, request, *args, **kwargs):
-        status = get_object_or_404(Status, pk=kwargs["pk"])
-        form = StatusCreateForm(request.POST, instance=status)
+        task = get_object_or_404(Task, pk=kwargs["pk"])
+        form = TaskCreateForm(request.POST, instance=task)
         if form.is_valid():
             form.save()
-            messages.add_message(request, messages.SUCCESS, 'Статус успешно изменен')
-            return redirect("statuses_list")
-        return render(request, "statuses/create_form.html", {"form": form})
+            messages.add_message(request, messages.SUCCESS, 'Задача успешно изменена')
+            return redirect("tasks_list")
+        return render(request, "tasks/create_form.html", {"form": form})
 
 
-class StatusDeleteView(View):
+class TaskDeleteView(View):
 
      def get(self, request, *args, **kwargs):
-        status = get_object_or_404(Status, pk=kwargs["pk"])
-        return render(request, 'statuses/delete.html', {"status": status})
+        task = get_object_or_404(Task, pk=kwargs["pk"])
+        return render(request, 'tasks/delete.html', {"task": task})
      
      def post(self, request, *args, **kwargs):
-        status = get_object_or_404(Status, pk=kwargs["pk"])
-        if status:
-            try:
-                status.delete()
-                messages.add_message(request, messages.SUCCESS, 'Статус успешно удален')
-            except ProtectedError:    
-                messages.add_message(request, messages.ERROR, 'Невозможно удалить статус, потому что он используется')
-            return redirect("statuses_list")
-'''
+        task = get_object_or_404(Task, pk=kwargs["pk"])
+        if task:
+            task.delete()
+            messages.add_message(request, messages.SUCCESS, 'Задача успешно удалена')
+        return redirect("task_list")
