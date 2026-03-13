@@ -4,26 +4,32 @@
     <h1 class="my-4">
         Статусы
     </h1>
-    <a class="btn btn-primary mb-3" href="/statuses/create/">Создать статус</a>
+    <a class="btn btn-primary mb-3" href="/tasks/create/">Создать задачу</a>
     <table class="table table-striped">
   <thead>
     <tr>
       <th>ID</th>
       <th>Имя</th>
+      <th>Статус</th>
+      <th>Автор</th>
+      <th>Исполнитель</th>
       <th>Дата создания</th>
       <th></th>
     </tr>
   </thead>
   <tbody>
-    {% for status in statuses %}
+    {% for task in tasks %}
       <tr>
-        <td>{{ status.id }}</td>
-        <td>{{ status.name }}</td>
-        <td>{{ status.created_at }}</td>
+        <td>{{ task.id }}</td>
+        <td>{{ task.name }}</td>
+        <td>{{ task.status }}</td>
+        <td>{{ task.author }}</td>
+        <td>{{ task.executor }}</td>
+        <td>{{ task.created_at }}</td>
         <td>
-          <a href="/statuses/{{ status.id }}/update/">Изменить</a>
+          <a href="/tasks/{{ task.id }}/update/">Изменить</a>
           <br>
-          <a href="/statuses/{{ status.id }}/delete/">Удалить</a>
+          <a href="/tasks/{{ task.id }}/delete/">Удалить</a>
         </td>
       </tr>
      {% endfor %}
