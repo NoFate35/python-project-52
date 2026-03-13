@@ -31,8 +31,12 @@ class TaskCreateView(BaseCreateView):
 
     def post(self, request, *args, **kwargs):
         form = TaskCreateForm(request.POST)
+        
         if form.is_valid():
-            form.save()
+            task = form.save(commit=False)
+            
+            task.author = request.user
+            task.save()
             messages.add_message(request, messages.SUCCESS, 'Задача успешно создана')
             return redirect('tasks_list')
         return render (request, 'tasks/create_form.html', {'form': form})

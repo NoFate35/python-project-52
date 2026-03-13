@@ -8,8 +8,8 @@ from task_manager.labels.models import Label
 class TaskCreateForm(forms.ModelForm):
     description = forms.CharField(widget=forms.Textarea, required=False, label='Описание')
     status = forms.ModelChoiceField(queryset=Status.objects.all(), label="Статус")
-    executor = forms.ModelChoiceField(queryset=User.objects.all(), label="Исполнитель")
-    labels = forms.ModelMultipleChoiceField(queryset=Label.objects.all(), widget=forms.SelectMultiple, label="Метки")
+    executor = forms.ModelChoiceField(queryset=User.objects.all(), label="Исполнитель", required=False)
+    labels = forms.ModelMultipleChoiceField(queryset=Label.objects.all(), widget=forms.SelectMultiple, label="Метки", required=False)
     
 
     class Meta:
