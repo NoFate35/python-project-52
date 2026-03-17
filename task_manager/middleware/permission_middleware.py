@@ -19,6 +19,7 @@ class PermissionMiddleware:
         return response
     
     def process_view(self, request, view_func, view_args, view_kwargs):
+        print('request.user', request.user)
         #если в имени запрашиваемой view есть Update либо Delete то проверка дальше
         if ("UpdateView" in str(view_func.__dict__)) or ("DeleteView" in str(view_func.__dict__)) or ("StatusCreateView" in str(view_func.__dict__)):
             #если пользователь не залогинен

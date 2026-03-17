@@ -6,8 +6,7 @@ from django.views import View
 from . forms import TaskCreateForm
 from django.contrib import messages
 from django.db.models.deletion import ProtectedError
-from django.utils.decorators import method_decorator
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 class TaskListView(ListView):
     model = Task
@@ -22,7 +21,7 @@ class TaskListView(ListView):
         return context
 
 
-class TaskCreateView(BaseCreateView):
+class TaskCreateView(LoginRequiredMixin,BaseCreateView):
 
     def get(self, request, *args, **kwargs):
         form = TaskCreateForm()
@@ -34,7 +33,7 @@ class TaskCreateView(BaseCreateView):
         
         if form.is_valid():
             task = form.save(commit=False)
-            
+
             task.author = request.user
             task.save()
             messages.add_message(request, messages.SUCCESS, 'Задача успешно создана')
