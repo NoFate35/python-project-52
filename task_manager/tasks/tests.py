@@ -1,5 +1,6 @@
 from django.test import TestCase
 from task_manager.tasks.models import Task
+from task_manager.statuses.models import Status
 from django.contrib.auth.models import User
 from django.urls import reverse
 
@@ -11,6 +12,7 @@ class TasksTest(TestCase):
         self.list_url = reverse("tasks_list")
         self.task1 = Task.objects.get(name='task1')
         self.task2 = Task.objects.get(name='task2')
+        self.status2 = Status.objects.get(name='status2')
         self.tasks = Task.objects.all()
         self.create_url = reverse("tasks_create")
         self.user2 = User.objects.get(pk=2)
@@ -106,7 +108,7 @@ class TasksTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
         #отправка запроса на создание
-        response = self.client.post(self.create_url, data={"name": "task3", "status": '2'})
+        response = self.client.post(self.create_url, data={"name": "task3", "status": self.status2})
         self.assertContains(response, 'Задача успешно создана')
 
         #проверка создания в списке задач

@@ -30,10 +30,9 @@ class TaskCreateView(LoginRequiredMixin,BaseCreateView):
 
     def post(self, request, *args, **kwargs):
         form = TaskCreateForm(request.POST)
-        
         if form.is_valid():
             task = form.save(commit=False)
-
+            print('tttasssk.status', task.status)
             task.author = request.user
             task.save()
             messages.add_message(request, messages.SUCCESS, 'Задача успешно создана')
@@ -46,7 +45,7 @@ class TaskFormUpdateView(View):
      def get(self, request, *args, **kwargs):
         task = get_object_or_404(Task, pk=kwargs["pk"])
         form = TaskCreateForm(instance=task)
-        return render(request, 'task/create_form.html', {"form": form})
+        return render(request, 'tasks/create_form.html', {"form": form})
      
      def post(self, request, *args, **kwargs):
         task = get_object_or_404(Task, pk=kwargs["pk"])
@@ -62,11 +61,20 @@ class TaskDeleteView(View):
 
      def get(self, request, *args, **kwargs):
         task = get_object_or_404(Task, pk=kwargs["pk"])
-        return render(request, 'tasks/delete.html', {"task": task})
+        if task.author == request.user:
+            return render(request, 'tasks/delete.html', {"task": task})
+        messages.add_message(request, messages.ERROR, 'Задачу может удалить только ее автор')
+        return redirect("tasks_list")
      
      def post(self, request, *args, **kwargs):
         task = get_object_or_404(Task, pk=kwargs["pk"])
-        if task:
+        if task and (task.author == request.user):
             task.delete()
             messages.add_message(request, messages.SUCCESS, 'Задача успешно удалена')
-        return redirect("task_list")
+        messages.add_message(request, messages.ERROR, 'Задачу может удалить только ее автор')
+        return redirect("tasks_list")
+
+class TaskShowView(View):
+    def get(self, request, *args, **kwargs):
+        task = get_object_or_404(Task, id=kwargs["pk"])
+        return render(request, "tasks/show.html", context={"task": task,})
