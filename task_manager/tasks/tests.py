@@ -75,7 +75,7 @@ class TasksTest(TestCase):
         self.assertContains(response, 'Вы не авторизованы! Пожалуйста, выполните вход.')
 
         #отправить запрос на создание post без аутентификации
-        response = self.client.post(self.create_url, data={"name": "task3", "status": '2'})
+        response = self.client.post(self.create_url, data={"name": "task3", "status": '2'}, follow=True)
         self.assertContains(response, 'Вы не авторизованы! Пожалуйста, выполните вход.')
 
         #отобразить страницу просмотра без аутентификации
@@ -87,7 +87,7 @@ class TasksTest(TestCase):
         self.assertContains(response, 'Вы не авторизованы! Пожалуйста, выполните вход.')
 
         #отправить запрос на изменение post без аутентификации
-        response = self.client.post(self.update1_url, data={"name": "task2", "status": '1'})
+        response = self.client.post(self.update1_url, data={"name": "task2", "status": '1'}, follow=True)
         self.assertContains(response, 'Вы не авторизованы! Пожалуйста, выполните вход.')
 
         #отобразить форму удаления без аутентификации
@@ -95,7 +95,7 @@ class TasksTest(TestCase):
         self.assertContains(response, 'Вы не авторизованы! Пожалуйста, выполните вход.')
 
         #отправить запрос на удаление post без аутентификации
-        response = self.client.post(self.delete2_url)
+        response = self.client.post(self.delete2_url, follow=True)
         self.assertContains(response, 'Вы не авторизованы! Пожалуйста, выполните вход.')
 
 
@@ -108,7 +108,8 @@ class TasksTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
         #отправка запроса на создание
-        response = self.client.post(self.create_url, data={"name": "task3", "status": self.status2})
+        response = self.client.post(self.create_url, data={"name": "task3", "status": '2'}, follow=True)
+        #print("status", self.status2)
         self.assertContains(response, 'Задача успешно создана')
 
         #проверка создания в списке задач
@@ -119,8 +120,10 @@ class TasksTest(TestCase):
         statuses = response.context["tasks"]
         self.assertTrue(len(statuses) == 3)
 
+        task3 = Task.objects.get(name='task3')
+
         #просмотр задачи
-        response = self.client.get(reverse("tasks_show", kwargs={'pk': self.task3.id}))
+        response = self.client.get(reverse("tasks_show", kwargs={'pk': task3.id}))
         self.assertContains(response, 'task3')
 
 
@@ -131,7 +134,7 @@ class TasksTest(TestCase):
         self.make_login()
 
         #отправка запроса на создание
-        response = self.client.post(self.create_url, data={"name": "task3", "status": '2'})
+        response = self.client.post(self.create_url, data={"name": "task3", "status": '2'}, follow=True)
         self.assertContains(response, 'Задача успешно создана')
 
         #запрос на создание задачи с таким же именем
@@ -144,8 +147,8 @@ class TasksTest(TestCase):
         self.make_login()
 
         #отправить post запрос на обновление с уже существующим именем задачи
-        response = self.client.post(self.update1_url, follow=True, data={"name": self.task2.name, 'status': self.task1.status})
-        self.assertContains(response, 'Task status с таким Имя уже существует.')
+        response = self.client.post(self.update1_url, follow=True, data={"name": self.task2.name, 'status': self.task1.status.id})
+        self.assertContains(response, 'Task с таким Name уже существует.')
 
 
     def test_status_good_update(self):
@@ -162,7 +165,7 @@ class TasksTest(TestCase):
         self.assertContains(response, 'task1')
 
         #отправка запроса post на обновление
-        response = self.client.post(self.update1_url, follow=True, data={"name": 'task1update', 'status': self.task1.status})
+        response = self.client.post(self.update1_url, follow=True, data={"name": 'task1update', 'status': self.task1.status.id})
         self.assertContains(response, 'task1update')
 
         #просмотр задачи

@@ -21,7 +21,7 @@ class TaskListView(ListView):
         return context
 
 
-class TaskCreateView(LoginRequiredMixin,BaseCreateView):
+class TaskCreateView(BaseCreateView):
 
     def get(self, request, *args, **kwargs):
         form = TaskCreateForm()
@@ -32,7 +32,7 @@ class TaskCreateView(LoginRequiredMixin,BaseCreateView):
         form = TaskCreateForm(request.POST)
         if form.is_valid():
             task = form.save(commit=False)
-            print('tttasssk.status', task.status)
+            #print('tttasssk.status', task.status)
             task.author = request.user
             task.save()
             messages.add_message(request, messages.SUCCESS, 'Задача успешно создана')
@@ -77,4 +77,4 @@ class TaskDeleteView(View):
 class TaskShowView(View):
     def get(self, request, *args, **kwargs):
         task = get_object_or_404(Task, id=kwargs["pk"])
-        return render(request, "tasks/show.html", context={"task": task,})
+        return render(request, "tasks/show.html", context={"task": task})

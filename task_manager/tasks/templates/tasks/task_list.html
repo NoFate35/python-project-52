@@ -6,6 +6,18 @@
     </h1>
     <a class="btn btn-primary mb-3" href="/tasks/create/">Создать задачу</a>
     <table class="table table-striped">
+       <form action="{% url 'tasks_list' %}" method="post">
+        {% endif %}
+        {% csrf_token %}
+                
+                     {% for field in form %}
+                        <div class="mb-3">
+                            <label class="form-label" for="{{ field.auto_id }}">{{ field.label }}</label>
+                                {{ field }}
+                        </div>
+                    {% endfor %}
+       <input class="btn btn-primary" type="submit" value="Показать">
+    </form>
   <thead>
     <tr>
       <th>ID</th>

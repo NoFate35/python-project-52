@@ -22,7 +22,7 @@ class PermissionMiddleware:
         if request.user == AnonymousUser:
             return redirect("login")
         #если в имени запрашиваемой view есть Update либо Delete то проверка дальше
-        if ("UpdateView" in str(view_func.__dict__)) or ("DeleteView" in str(view_func.__dict__)) or ("StatusCreateView" in str(view_func.__dict__)):
+        if ("UpdateView" in str(view_func.__dict__)) or ("DeleteView" in str(view_func.__dict__)) or ("StatusCreateView" in str(view_func.__dict__)) or ("TaskCreateView" in str(view_func.__dict__)) or ("TaskShowView" in str(view_func.__dict__)):
             #если пользователь не залогинен
             if not request.user.is_authenticated:
                 messages.add_message(request, messages.ERROR, 'Вы не авторизованы! Пожалуйста, выполните вход.')
