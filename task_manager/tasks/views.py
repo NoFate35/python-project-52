@@ -14,6 +14,9 @@ class TaskListView(ListView):
     context_object_name = 'tasks'
 
     def get_queryset(self, *kwargs):
+        form = TaskFilterForm(self.request.GET)
+        if form.is_valid():
+            print(form.cleaned_data)
         return Task.objects.all()
 
     def get_context_data(self, **kwargs):

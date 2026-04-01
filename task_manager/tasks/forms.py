@@ -37,15 +37,15 @@ class TaskFilterForm(forms.ModelForm):
     status = forms.ModelChoiceField(queryset=Status.objects.all(), label="Статус")
     executor = forms.ModelChoiceField(queryset=User.objects.all(), label="Исполнитель", required=False)
     labels = forms.ModelChoiceField(queryset=Label.objects.all(), label="Метка", required=False)
-    author = forms.BooleanField(label="Только свои задачи",required=False)
+    self_author = forms.BooleanField(label="Только свои задачи",required=False)
 
     class Meta:
         model = Task
-        fields = ['status', 'executor', 'labels', 'author']
+        fields = ['status', 'executor', 'labels']
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['status'].widget.attrs.update({'class':"form-select"})
         self.fields['executor'].widget.attrs.update({'class':"form-select"})
         self.fields['labels'].widget.attrs.update({'class':"form-select"})
-        self.fields['author'].widget.attrs.update({'class':"form-check"})
+        self.fields['self_author'].widget.attrs.update({'class':"form-check-input"})

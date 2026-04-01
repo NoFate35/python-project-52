@@ -7,16 +7,19 @@
     <a class="btn btn-primary mb-3" href="/tasks/create/">Создать задачу</a>
       <div class="container-md bg-body-tertiary mt-3 mb-3 border rounded-3">
         <div class="p-3">
-          <form action="{% url 'tasks_list' %}" method="post">
+          <form action="{% url 'tasks_list' %}" method="get">
               {% csrf_token %}
                      {% for field in form %}
                         <div class="mb-3">
                           {% if field.label == 'Только свои задачи' %}
+                            <div class="form-check">
                               {{ field }}
-                              <label class="form-label" for="{{ field.auto_id }}">{{ field.label }}</label>
-                          {% endif %}
+                              <label class="form-check-label" for="{{ field.auto_id }}">{{ field.label }}</label>
+                            </div>
+                            {% else %}
                             <label class="form-label" for="{{ field.auto_id }}">{{ field.label }}</label>
                                 {{ field }}
+                            {% endif %}
                         </div>
                       {% endfor %}
               <input class="btn btn-primary" type="submit" value="Показать">
