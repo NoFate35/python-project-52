@@ -3,7 +3,7 @@ from django.views.generic.edit import BaseCreateView
 from django.views.generic import ListView
 from task_manager.tasks.models import Task
 from django.views import View
-from . forms import TaskCreateForm
+from . forms import TaskCreateForm, TaskFilterForm
 from django.contrib import messages
 from django.db.models.deletion import ProtectedError
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -18,6 +18,8 @@ class TaskListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        form = TaskFilterForm()
+        context['form'] = form
         return context
 
 
@@ -32,7 +34,6 @@ class TaskCreateView(BaseCreateView):
         form = TaskCreateForm(request.POST)
         if form.is_valid():
             task = form.save(commit=False)
-            #print('tttasssk.status', task.status)
             task.author = request.user
             task.save()
             messages.add_message(request, messages.SUCCESS, 'Задача успешно создана')

@@ -5,19 +5,26 @@
         Задачи
     </h1>
     <a class="btn btn-primary mb-3" href="/tasks/create/">Создать задачу</a>
-    <table class="table table-striped">
-       <form action="{% url 'tasks_list' %}" method="post">
-        {% endif %}
-        {% csrf_token %}
-                
+      <div class="container-md bg-body-tertiary mt-3 mb-3 border rounded-3">
+        <div class="p-3">
+          <form action="{% url 'tasks_list' %}" method="post">
+              {% csrf_token %}
                      {% for field in form %}
                         <div class="mb-3">
+                          {% if field.label == 'Только свои задачи' %}
+                              {{ field }}
+                              <label class="form-label" for="{{ field.auto_id }}">{{ field.label }}</label>
+                          {% endif %}
                             <label class="form-label" for="{{ field.auto_id }}">{{ field.label }}</label>
                                 {{ field }}
                         </div>
-                    {% endfor %}
-       <input class="btn btn-primary" type="submit" value="Показать">
-    </form>
+                      {% endfor %}
+              <input class="btn btn-primary" type="submit" value="Показать">
+          </form>
+        </div>
+      </div>
+       
+  <table class="table table-striped">
   <thead>
     <tr>
       <th>ID</th>
