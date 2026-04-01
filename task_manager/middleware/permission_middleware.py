@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth.models import User, AnonymousUser
 from django.contrib import messages
-
+from django.utils.functional import SimpleLazyObject
 
 class PermissionMiddleware:
     def __init__(self, get_response):
@@ -19,7 +19,8 @@ class PermissionMiddleware:
         return response
     
     def process_view(self, request, view_func, view_args, view_kwargs):
-        if request.user == AnonymousUser:
+        #print('reqqquest user', request.user)
+        if type(request.user) == AnonymousUser:
             return redirect("login")
         #если в имени запрашиваемой view есть Update либо Delete то проверка дальше
         if ("UpdateView" in str(view_func.__dict__)) or ("DeleteView" in str(view_func.__dict__)) or ("StatusCreateView" in str(view_func.__dict__)) or ("TaskCreateView" in str(view_func.__dict__)) or ("TaskShowView" in str(view_func.__dict__)):

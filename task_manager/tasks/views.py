@@ -16,14 +16,12 @@ class TaskListView(ListView):
     def get_queryset(self, *kwargs):
         form = TaskFilterForm(self.request.GET)
         tasks = Task.objects.all()
-        
         if form.is_valid():
             query = dict()
-            if form.cleaned_data.pop['self_author']:
+            if form.cleaned_data.pop('self_author'):
                 query['author'] = self.request.user
-            query.extend({key: value for key, value in form.cleaned_data.items() if value is not None})
-            print('fffiiillld', query)
-        tasks = tasks.objects.filter(**query)
+            query.update({key: value for key, value in form.cleaned_data.items() if value is not None})
+            tasks = tasks.filter(**query)
         return tasks
 
     def get_context_data(self, **kwargs):

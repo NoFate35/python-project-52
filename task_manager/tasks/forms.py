@@ -34,7 +34,7 @@ class TaskCreateForm(forms.ModelForm):
 
 
 class TaskFilterForm(forms.ModelForm):
-    status = forms.ModelChoiceField(queryset=Status.objects.all(), label="Статус")
+    status = forms.ModelChoiceField(queryset=Status.objects.all(), label="Статус", required=False)
     executor = forms.ModelChoiceField(queryset=User.objects.all(), label="Исполнитель", required=False)
     labels = forms.ModelChoiceField(queryset=Label.objects.all(), label="Метка", required=False)
     self_author = forms.BooleanField(label="Только свои задачи",required=False)
