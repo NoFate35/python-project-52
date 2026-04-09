@@ -30,6 +30,7 @@ class StatusesTest(TestCase):
 
 
     def test_statuses_list(self):
+        self.make_login()
         #отображениие списка статусов по коду ответа
         response = self.client.get(self.list_url)
         self.assertEqual(response.status_code, 200)

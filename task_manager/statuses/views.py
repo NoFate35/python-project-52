@@ -7,10 +7,10 @@ from . forms import StatusCreateForm
 from django.contrib import messages
 from django.db.models.deletion import ProtectedError
 from django.utils.decorators import method_decorator
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-class StatusListView(ListView):
+class StatusListView(LoginRequiredMixin, ListView):
     model = Status
     template_name = "statuses/status_list.html"
     context_object_name = 'statuses'
@@ -23,7 +23,7 @@ class StatusListView(ListView):
         return context
 
 
-class StatusCreateView(BaseCreateView):
+class StatusCreateView(LoginRequiredMixin, BaseCreateView):
 
     def get(self, request, *args, **kwargs):
         form = StatusCreateForm()
@@ -39,7 +39,7 @@ class StatusCreateView(BaseCreateView):
         return render (request, 'statuses/create_form.html', {'form': form})
 
 
-class StatusFormUpdateView(View):
+class StatusFormUpdateView(LoginRequiredMixin, View):
 
      def get(self, request, *args, **kwargs):
         status = get_object_or_404(Status, pk=kwargs["pk"])
@@ -56,7 +56,7 @@ class StatusFormUpdateView(View):
         return render(request, "statuses/create_form.html", {"form": form})
 
 
-class StatusDeleteView(View):
+class StatusDeleteView(LoginRequiredMixin, View):
 
      def get(self, request, *args, **kwargs):
         status = get_object_or_404(Status, pk=kwargs["pk"])

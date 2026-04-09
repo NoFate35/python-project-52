@@ -17,23 +17,13 @@ class PermissionMiddleware:
         # the view is called.
 
         return response
-    
+    '''
     def process_view(self, request, view_func, view_args, view_kwargs):
-        #print('reqqquest user', request.user)
-        if type(request.user) == AnonymousUser:
-            return redirect("login")
-        #если в имени запрашиваемой view есть Update либо Delete то проверка дальше
-        if ("UpdateView" in str(view_func.__dict__)) or ("DeleteView" in str(view_func.__dict__)) or ("StatusCreateView" in str(view_func.__dict__)) or ("TaskCreateView" in str(view_func.__dict__)) or ("TaskShowView" in str(view_func.__dict__)):
-            #если пользователь не залогинен
-            if not request.user.is_authenticated:
-                messages.add_message(request, messages.ERROR, 'Вы не авторизованы! Пожалуйста, выполните вход.')
-                return redirect("login")
-            # если пользователь залогинен
-            else:
-                #если в имени запрашиваемой view есть UserUpdate либо UserDelete то проверка дальше
-                if ("UserFormUpdateView" in str(view_func.__dict__)) or ("UserDeleteView" in str(view_func.__dict__)):
-                    user = get_object_or_404(User, pk=view_kwargs["pk"])
-                    #сравнение пользователя из сессии с запрашиваемым
-                    if request.user != user:
-                        messages.add_message(request, messages.ERROR, 'У вас нет прав для изменения другого пользователя.')
-                        return redirect("users_list")
+        #если в имени запрашиваемой view есть UserUpdate либо UserDelete то проверка дальше
+        if ("UserFormUpdateView" in str(view_func.__dict__)) or ("UserDeleteView" in str(view_func.__dict__)):
+            user = get_object_or_404(User, pk=view_kwargs["pk"])
+            #сравнение пользователя из сессии с запрашиваемым
+            if request.user != user:
+                messages.add_message(request, messages.ERROR, 'У вас нет прав для изменения другого пользователя.')
+                return redirect("users_list")
+                '''
