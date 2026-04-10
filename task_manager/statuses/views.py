@@ -7,7 +7,6 @@ from . forms import StatusCreateForm
 from django.contrib import messages
 from django.db.models.deletion import ProtectedError
 from task_manager.mixins.login import CustomLoginRequieredMixin
-from task_manager.mixins.user_pass import CustomUserPassesTestMixin
 
 
 class StatusListView(CustomLoginRequieredMixin, ListView):

@@ -7,7 +7,7 @@ from . forms import RegisterUserForm, UpdateUserForm
 from django.contrib import messages
 from django.db.models.deletion import ProtectedError
 from task_manager.mixins.login import CustomLoginRequieredMixin
-from task_manager.mixins.user_pass import CustomUserPassesTestMixin
+from django.contrib.auth.mixins import UserPassesTestMixin
 
 
 class UserListView(ListView):
@@ -55,7 +55,7 @@ class UserFormUpdateView(CustomLoginRequieredMixin, View):
         return render(request, "users/create_form.html", {"form": form})
 
 
-class UserDeleteView(CustomLoginRequieredMixin, CustomUserPassesTestMixin, View):
+class UserDeleteView(CustomLoginRequieredMixin, UserPassesTestMixin, View):
 
      def test_func(self):
         user = get_object_or_404(User, pk=self.kwargs["pk"])
