@@ -45,7 +45,9 @@ class TasksTest(TestCase):
 
     
     def test_tasks_list(self):
-        #отображение списка пользователей
+
+        self.make_login()
+        #отображение списка задач
         response = self.client.get(self.list_url)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Задачи')

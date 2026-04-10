@@ -6,11 +6,11 @@ from django.views import View
 from . forms import StatusCreateForm
 from django.contrib import messages
 from django.db.models.deletion import ProtectedError
-from django.utils.decorators import method_decorator
-from django.contrib.auth.mixins import LoginRequiredMixin
+from task_manager.mixins.login import CustomLoginRequieredMixin
+from task_manager.mixins.user_pass import CustomUserPassesTestMixin
 
 
-class StatusListView(LoginRequiredMixin, ListView):
+class StatusListView(CustomLoginRequieredMixin, ListView):
     model = Status
     template_name = "statuses/status_list.html"
     context_object_name = 'statuses'
@@ -23,7 +23,7 @@ class StatusListView(LoginRequiredMixin, ListView):
         return context
 
 
-class StatusCreateView(LoginRequiredMixin, BaseCreateView):
+class StatusCreateView(CustomLoginRequieredMixin, BaseCreateView):
 
     def get(self, request, *args, **kwargs):
         form = StatusCreateForm()
@@ -39,7 +39,7 @@ class StatusCreateView(LoginRequiredMixin, BaseCreateView):
         return render (request, 'statuses/create_form.html', {'form': form})
 
 
-class StatusFormUpdateView(LoginRequiredMixin, View):
+class StatusFormUpdateView(CustomLoginRequieredMixin, View):
 
      def get(self, request, *args, **kwargs):
         status = get_object_or_404(Status, pk=kwargs["pk"])
@@ -56,7 +56,7 @@ class StatusFormUpdateView(LoginRequiredMixin, View):
         return render(request, "statuses/create_form.html", {"form": form})
 
 
-class StatusDeleteView(LoginRequiredMixin, View):
+class StatusDeleteView(CustomLoginRequieredMixin, View):
 
      def get(self, request, *args, **kwargs):
         status = get_object_or_404(Status, pk=kwargs["pk"])
