@@ -68,5 +68,5 @@ class StatusDeleteView(CustomLoginRequieredMixin, View):
                 status.delete()
                 messages.add_message(request, messages.SUCCESS, 'Статус успешно удален')
             except ProtectedError:    
-                messages.add_message(request, messages.ERROR, 'Невозможно удалить статус, потому что он используется')
+                messages.add_message(request, messages.ERROR, 'Невозможно удалить статус, потому что он уже используется')
             return redirect("statuses_list")
