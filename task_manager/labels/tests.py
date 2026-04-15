@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 
 class StatusesTest(TestCase):
-    fixtures = ["labels.json", "users.json"]
+    fixtures = ["labels.json", "users.json", "statuses.json"]
 
     def setUp(self):
         self.label1 = Label.objects.get(pk=1)
@@ -152,7 +152,9 @@ class StatusesTest(TestCase):
         create_task_url = reverse("tasks_create")
 
         #отправка запроса на создание
-        response = self.client.post(create_task_url, data={"name": "task3", "status": '2', 'labels': [1, 2]}, follow=True)
+        queryset = Label.objects.filter(name__in=[self.label1.name, self.label2.name])
+        print('queryseeet', queryset)
+        response = self.client.post(create_task_url, data={"name": "task5", "status": '2', 'labels': queryset}, follow=True)
         self.assertContains(response, 'Задача успешно создана')
 
         delete1_url = reverse("labels_delete", kwargs={'pk': self.label1.id})

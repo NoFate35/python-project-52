@@ -41,12 +41,16 @@ class TaskCreateView(CustomLoginRequieredMixin, BaseCreateView):
 
     def post(self, request, *args, **kwargs):
         form = TaskCreateForm(request.POST)
+        print('yyyyyyy', form)
         if form.is_valid():
+            print('form cleaned data', form.cleaned_data)
             task = form.save(commit=False)
             task.author = request.user
             task.save()
+            task.labels.set(form.cleaned_data['labels'])
             messages.add_message(request, messages.SUCCESS, 'Задача успешно создана')
             return redirect('tasks_list')
+        print('nnnnnnnn')
         return render (request, 'tasks/create_form.html', {'form': form})
 
 
@@ -62,6 +66,7 @@ class TaskFormUpdateView(CustomLoginRequieredMixin, View):
         form = TaskCreateForm(request.POST, instance=task)
         if form.is_valid():
             form.save()
+            task.labels.set(form.cleaned_data['labels'])
             messages.add_message(request, messages.SUCCESS, 'Задача успешно изменена')
             return redirect("tasks_list")
         return render(request, "tasks/create_form.html", {"form": form})
@@ -90,4 +95,5 @@ class TaskDeleteView(CustomLoginRequieredMixin, UserPassesTestMixin, View):
 class TaskShowView(CustomLoginRequieredMixin, View):
     def get(self, request, *args, **kwargs):
         task = get_object_or_404(Task, id=kwargs["pk"])
+        #print('task', task.labels.all())
         return render(request, "tasks/show.html", context={"task": task})

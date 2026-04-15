@@ -5,3 +5,6 @@ class Label(models.Model):
                             unique=True, 
                             error_messages={"unique": "Task label с таким Имя уже существует."})
     created_at = models.DateTimeField(auto_now_add=True, null=True)
+
+    def __str__(self):
+        return self.name

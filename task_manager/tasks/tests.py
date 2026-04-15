@@ -111,7 +111,6 @@ class TasksTest(TestCase):
 
         #отправка запроса на создание
         response = self.client.post(self.create_url, data={"name": "task3", "status": '2'}, follow=True)
-        #print("status", self.status2)
         self.assertContains(response, 'Задача успешно создана')
 
         #проверка создания в списке задач
