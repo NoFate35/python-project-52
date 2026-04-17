@@ -151,10 +151,8 @@ class StatusesTest(TestCase):
 
         create_task_url = reverse("tasks_create")
 
-        #отправка запроса на создание
-        queryset = Label.objects.filter(name__in=[self.label1.name, self.label2.name])
-        print('queryseeet', queryset)
-        response = self.client.post(create_task_url, data={"name": "task5", "status": '2', 'labels': queryset}, follow=True)
+        #отправка запроса на создание задачи с label1 и label2
+        response = self.client.post(create_task_url, data={"name": "task5", "status": '2', 'labels': ['1', '2']}, follow=True)
         self.assertContains(response, 'Задача успешно создана')
 
         delete1_url = reverse("labels_delete", kwargs={'pk': self.label1.id})
@@ -162,7 +160,7 @@ class StatusesTest(TestCase):
 
         #post запрос на удаление пользователя который задействован
         response = self.client.post(delete1_url, follow=True)
-        self.assertContains(response, 'Невозможно удалить метку, потому что она используется')
+        self.assertContains(response, 'Невозможно удалить метку, потому что она уже используется')
 
         response = self.client.post(delete2_url, follow=True)
-        self.assertContains(response, 'Невозможно удалить метку, потому что она используется')
+        self.assertContains(response, 'Невозможно удалить метку, потому что она уже используется')

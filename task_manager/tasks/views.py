@@ -41,16 +41,13 @@ class TaskCreateView(CustomLoginRequieredMixin, BaseCreateView):
 
     def post(self, request, *args, **kwargs):
         form = TaskCreateForm(request.POST)
-        print('yyyyyyy', form)
         if form.is_valid():
-            print('form cleaned data', form.cleaned_data)
             task = form.save(commit=False)
             task.author = request.user
             task.save()
             task.labels.set(form.cleaned_data['labels'])
             messages.add_message(request, messages.SUCCESS, 'Задача успешно создана')
             return redirect('tasks_list')
-        print('nnnnnnnn')
         return render (request, 'tasks/create_form.html', {'form': form})
 
 
