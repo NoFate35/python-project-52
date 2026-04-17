@@ -64,7 +64,7 @@ class LabelDeleteView(CustomLoginRequieredMixin, View):
      def post(self, request, *args, **kwargs):
         label = get_object_or_404(Label, pk=kwargs["pk"])
         if label.task_set.all().count() > 0:
-            messages.add_message(request, messages.ERROR, 'Невозможно удалить метку, потому что она уже используется')
+            messages.add_message(request, messages.ERROR, 'Невозможно удалить метку, потому что она используется')
         else:
             label.delete()
             messages.add_message(request, messages.SUCCESS, 'Метка успешно удалена')

@@ -160,7 +160,7 @@ class StatusesTest(TestCase):
 
         #post запрос на удаление пользователя который задействован
         response = self.client.post(delete1_url, follow=True)
-        self.assertContains(response, 'Невозможно удалить метку, потому что она уже используется')
+        self.assertContains(response, 'Невозможно удалить метку, потому что она используется')
 
         response = self.client.post(delete2_url, follow=True)
-        self.assertContains(response, 'Невозможно удалить метку, потому что она уже используется')
+        self.assertContains(response, 'Невозможно удалить метку, потому что она используется')
