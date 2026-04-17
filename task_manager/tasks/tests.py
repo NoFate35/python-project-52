@@ -207,11 +207,33 @@ class TasksTest(TestCase):
         response = self.client.post(delete_url, follow=True)
         self.assertContains(response, 'Задачу может удалить только ее автор')
 
-'''
+
     def test_task_filter_list(self):
-        #отображение списка пользователей
-        response = self.client.get(self.list_url, data={"status": "", "executor": '', 'label':''})
+        self.make_login()
+        #отображение списка задач фильтрация по статусу
+        response = self.client.get(self.list_url, data={"status": "", "executor": '', 'label':''}, follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Показать')
-'''
+        tasks = response.context["tasks"]
+        self.assertTrue(len(tasks) == 2)
+
+        #отображение списка задач фильтрация по статусу
+        response = self.client.get(self.list_url, data={'status': '1', 'executor': '', 'labels': '', 'self_author': False}, follow=True)
+        tasks = response.context["tasks"]
+        self.assertTrue(len(tasks) == 1)
+
+        #отображение списка задач фильтрация по status, executor
+        response = self.client.get(self.list_url, data={'status': '1', 'executor': '2', 'labels': '', 'self_author': False}, follow=True)
+        tasks = response.context["tasks"]
+        self.assertTrue(len(tasks) == 1)
+
+        #отображение списка задач фильтрация по status, executor, self_author
+        response = self.client.get(self.list_url, data={'status': '1', 'executor': '2', 'labels': '', 'self_author': True}, follow=True)
+        tasks = response.context["tasks"]
+        self.assertTrue(len(tasks) == 0)
+
+        #отображение списка задач фильтрация по status, executor, self_author
+        response = self.client.get(self.list_url, data={'status': '', 'executor': '', 'labels': '', 'self_author': True}, follow=True)
+        tasks = response.context["tasks"]
+        self.assertTrue(len(tasks) == 1)
 

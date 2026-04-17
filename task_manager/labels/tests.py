@@ -134,6 +134,7 @@ class StatusesTest(TestCase):
         #отображение страницы удаления
         response = self.client.get(self.delete_url)
         self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Да, удалить')
 
         #post запрос на удаление
         response = self.client.post(self.delete_url, follow=True)
