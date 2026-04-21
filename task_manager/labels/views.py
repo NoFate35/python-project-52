@@ -5,7 +5,6 @@ from task_manager.labels.models import Label
 from django.views import View
 from . forms import LabelCreateForm
 from django.contrib import messages
-from django.db.models.deletion import ProtectedError
 from task_manager.mixins.login import CustomLoginRequieredMixin
 
 

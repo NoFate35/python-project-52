@@ -2,11 +2,11 @@
 
 {% block content %}
         {% if form.instance.pk %}
-        <h1 class="my-4">Изменение метки</h1>
-            <form action="{% url 'labels_update' form.instance.pk  %}" method="post">
+        <h1 class="my-4">Изменение статуса</h1>
+            <form action="{% url 'statuses_update' form.instance.pk  %}" method="post">
         {% else %}
-            <h1 class="my-4">Создать метку</h1>
-            <form action="{% url 'labels_create' %}" method="post">
+            <h1 class="my-4">Создать статус</h1>
+            <form action="{% url 'statuses_create' %}" method="post">
         {% endif %}
         {% csrf_token %}
                 <div class="mb-3">
