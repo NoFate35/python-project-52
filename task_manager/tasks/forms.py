@@ -16,8 +16,7 @@ class TaskCreateForm(forms.ModelForm):
         model = Task
         fields = ['name', 'description', 'status', 'executor', 'labels']
         labels = {'name': "Имя",
-                  'author': 'Автор',
-                  'executor': 'Исполнитель'}
+                  'author': 'Автор'}
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -29,7 +28,8 @@ class TaskCreateForm(forms.ModelForm):
                                                         'placeholder':"Описание",
                                                         })
         self.fields['status'].widget.attrs.update({'class':"form-select"})
-        self.fields['executor'].widget.attrs.update({'class':"form-select", 'label': "Исполнитель"})
+        self.fields['executor'].widget.attrs.update({'class':"form-select"})
+        self.fields['executor'].label_from_instance = lambda obj: "%s" % (obj.get_full_name())
         self.fields['labels'].widget.attrs.update({'class':"form-select"})
 
 
