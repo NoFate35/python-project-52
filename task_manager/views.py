@@ -8,7 +8,6 @@ from django.http import HttpResponseRedirect
 
 
 class HomeView(TemplateView):
-
     template_name = "home.html"
 
     def get_context_data(self, **kwargs):
@@ -18,13 +17,14 @@ class HomeView(TemplateView):
 
 class LoginUserView(LoginView):
     form_class = AuthenticationForm
-    template_name = 'login_form.html'
-    
+    template_name = "login_form.html"
+
     def get_success_url(self):
-        messages.add_message(self.request, messages.SUCCESS, 'Вы залогинены')
-        return reverse('home')
+        messages.add_message(self.request, messages.SUCCESS, "Вы залогинены")
+        return reverse("home")
+
 
 def logout_view(request):
-    messages.add_message(request, messages.INFO, 'Вы разлогинены')
+    messages.add_message(request, messages.INFO, "Вы разлогинены")
     logout(request)
-    return HttpResponseRedirect(reverse('home'))
+    return HttpResponseRedirect(reverse("home"))

@@ -6,47 +6,66 @@ from task_manager.labels.models import Label
 
 
 class TaskCreateForm(forms.ModelForm):
-    description = forms.CharField(widget=forms.Textarea, required=False, label='Описание')
+    description = forms.CharField(
+        widget=forms.Textarea, required=False, label="Описание"
+    )
     status = forms.ModelChoiceField(queryset=Status.objects.all(), label="Статус")
-    executor = forms.ModelChoiceField(queryset=User.objects.all(), label="Исполнитель", required=False)
-    labels = forms.ModelMultipleChoiceField(queryset=Label.objects.all(), widget=forms.SelectMultiple, label="Метки", required=False)
-    
+    executor = forms.ModelChoiceField(
+        queryset=User.objects.all(), label="Исполнитель", required=False
+    )
+    labels = forms.ModelMultipleChoiceField(
+        queryset=Label.objects.all(),
+        widget=forms.SelectMultiple,
+        label="Метки",
+        required=False,
+    )
 
     class Meta:
         model = Task
-        fields = ['name', 'description', 'status', 'executor', 'labels']
-        labels = {'name': "Имя",
-                  'author': 'Автор'}
+        fields = ["name", "description", "status", "executor", "labels"]
+        labels = {"name": "Имя", "author": "Автор"}
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['name'].widget.attrs.update({
-                                                 'class':"form-control", 
-                                                 'placeholder':"Имя",
-                                                 })
-        self.fields['description'].widget.attrs.update({'class':"form-control", 
-                                                        'placeholder':"Описание",
-                                                        })
-        self.fields['status'].widget.attrs.update({'class':"form-select"})
-        self.fields['executor'].widget.attrs.update({'class':"form-select"})
-        self.fields['executor'].label_from_instance = lambda obj: "%s" % (obj.get_full_name())
-        self.fields['labels'].widget.attrs.update({'class':"form-select"})
-
+        self.fields["name"].widget.attrs.update(
+            {
+                "class": "form-control",
+                "placeholder": "Имя",
+            }
+        )
+        self.fields["description"].widget.attrs.update(
+            {
+                "class": "form-control",
+                "placeholder": "Описание",
+            }
+        )
+        self.fields["status"].widget.attrs.update({"class": "form-select"})
+        self.fields["executor"].widget.attrs.update({"class": "form-select"})
+        self.fields["executor"].label_from_instance = lambda obj: (
+            "%s" % (obj.get_full_name())
+        )
+        self.fields["labels"].widget.attrs.update({"class": "form-select"})
 
 
 class TaskFilterForm(forms.ModelForm):
-    status = forms.ModelChoiceField(queryset=Status.objects.all(), label="Статус", required=False)
-    executor = forms.ModelChoiceField(queryset=User.objects.all(), label="Исполнитель", required=False)
-    labels = forms.ModelChoiceField(queryset=Label.objects.all(), label="Метка", required=False)
-    self_author = forms.BooleanField(label="Только свои задачи",required=False)
+    status = forms.ModelChoiceField(
+        queryset=Status.objects.all(), label="Статус", required=False
+    )
+    executor = forms.ModelChoiceField(
+        queryset=User.objects.all(), label="Исполнитель", required=False
+    )
+    labels = forms.ModelChoiceField(
+        queryset=Label.objects.all(), label="Метка", required=False
+    )
+    self_author = forms.BooleanField(label="Только свои задачи", required=False)
 
     class Meta:
         model = Task
-        fields = ['status', 'executor', 'labels']
-    
+        fields = ["status", "executor", "labels"]
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['status'].widget.attrs.update({'class':"form-select"})
-        self.fields['executor'].widget.attrs.update({'class':"form-select"})
-        self.fields['labels'].widget.attrs.update({'class':"form-select"})
-        self.fields['self_author'].widget.attrs.update({'class':"form-check-input"})
+        self.fields["status"].widget.attrs.update({"class": "form-select"})
+        self.fields["executor"].widget.attrs.update({"class": "form-select"})
+        self.fields["labels"].widget.attrs.update({"class": "form-select"})
+        self.fields["self_author"].widget.attrs.update({"class": "form-check-input"})

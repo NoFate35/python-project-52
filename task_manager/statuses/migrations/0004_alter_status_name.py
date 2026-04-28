@@ -4,15 +4,18 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('statuses', '0003_status_created_at'),
+        ("statuses", "0003_status_created_at"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='status',
-            name='name',
-            field=models.CharField(error_messages={'unique': 'Task status с таким Имя уже существует.'}, max_length=200, unique=True),
+            model_name="status",
+            name="name",
+            field=models.CharField(
+                error_messages={"unique": "Task status с таким Имя уже существует."},
+                max_length=200,
+                unique=True,
+            ),
         ),
     ]

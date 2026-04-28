@@ -14,6 +14,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
 from django.urls import path, include
 from task_manager import views
@@ -26,8 +27,10 @@ urlpatterns = [
     path("statuses/", include("task_manager.statuses.urls")),
     path("labels/", include("task_manager.labels.urls")),
     path("tasks/", include("task_manager.tasks.urls")),
-    path('admin/', admin.site.urls),
-    path('favicon.ico', RedirectView.as_view(url=staticfiles_storage.url('favicon.ico'))),
-    path('login/', views.LoginUserView.as_view(), name="login"),
-    path('logout/', views.logout_view, name="logout"),
+    path("admin/", admin.site.urls),
+    path(
+        "favicon.ico", RedirectView.as_view(url=staticfiles_storage.url("favicon.ico"))
+    ),
+    path("login/", views.LoginUserView.as_view(), name="login"),
+    path("logout/", views.logout_view, name="logout"),
 ]
