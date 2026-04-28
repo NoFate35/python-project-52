@@ -74,35 +74,49 @@ class TasksTest(TestCase):
     def test_task_bad_authentificate_create_show_update_delete(self):
         # отобразить форму создания без аутентификации
         response = self.client.get(self.create_url, follow=True)
-        self.assertContains(response, "Вы не авторизованы! Пожалуйста, выполните вход.")
+        self.assertContains(
+            response, "Вы не авторизованы! Пожалуйста, выполните вход."
+        )
 
         # отправить запрос на создание post без аутентификации
         response = self.client.post(
             self.create_url, data={"name": "task3", "status": "2"}, follow=True
         )
-        self.assertContains(response, "Вы не авторизованы! Пожалуйста, выполните вход.")
+        self.assertContains(
+            response, "Вы не авторизованы! Пожалуйста, выполните вход."
+        )
 
         # отобразить страницу просмотра без аутентификации
         response = self.client.get(self.show1_url, follow=True)
-        self.assertContains(response, "Вы не авторизованы! Пожалуйста, выполните вход.")
+        self.assertContains(
+            response, "Вы не авторизованы! Пожалуйста, выполните вход."
+        )
 
         # отобразить форму изменения без аутентификации
         response = self.client.get(self.update1_url, follow=True)
-        self.assertContains(response, "Вы не авторизованы! Пожалуйста, выполните вход.")
+        self.assertContains(
+            response, "Вы не авторизованы! Пожалуйста, выполните вход."
+        )
 
         # отправить запрос на изменение post без аутентификации
         response = self.client.post(
             self.update1_url, data={"name": "task2", "status": "1"}, follow=True
         )
-        self.assertContains(response, "Вы не авторизованы! Пожалуйста, выполните вход.")
+        self.assertContains(
+            response, "Вы не авторизованы! Пожалуйста, выполните вход."
+        )
 
         # отобразить форму удаления без аутентификации
         response = self.client.get(self.delete2_url, follow=True)
-        self.assertContains(response, "Вы не авторизованы! Пожалуйста, выполните вход.")
+        self.assertContains(
+            response, "Вы не авторизованы! Пожалуйста, выполните вход."
+        )
 
         # отправить запрос на удаление post без аутентификации
         response = self.client.post(self.delete2_url, follow=True)
-        self.assertContains(response, "Вы не авторизованы! Пожалуйста, выполните вход.")
+        self.assertContains(
+            response, "Вы не авторизованы! Пожалуйста, выполните вход."
+        )
 
     def test_status_good_create(self):
         # аутентификация
@@ -129,7 +143,9 @@ class TasksTest(TestCase):
         task3 = Task.objects.get(name="task3")
 
         # просмотр задачи
-        response = self.client.get(reverse("tasks_show", kwargs={"pk": task3.id}))
+        response = self.client.get(
+            reverse("tasks_show", kwargs={"pk": task3.id})
+        )
         self.assertContains(response, "task3")
 
     def test_task_bad_unique_create(self):
@@ -223,7 +239,9 @@ class TasksTest(TestCase):
         self.make_login()
         # отображение списка задач фильтрация по статусу
         response = self.client.get(
-            self.list_url, data={"status": "", "executor": "", "label": ""}, follow=True
+            self.list_url,
+            data={"status": "", "executor": "", "label": ""},
+            follow=True,
         )
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Показать")
@@ -233,7 +251,12 @@ class TasksTest(TestCase):
         # отображение списка задач фильтрация по статусу
         response = self.client.get(
             self.list_url,
-            data={"status": "1", "executor": "", "labels": "", "self_author": False},
+            data={
+                "status": "1",
+                "executor": "",
+                "labels": "",
+                "self_author": False,
+            },
             follow=True,
         )
         tasks = response.context["tasks"]
@@ -242,7 +265,12 @@ class TasksTest(TestCase):
         # отображение списка задач фильтрация по status, executor
         response = self.client.get(
             self.list_url,
-            data={"status": "1", "executor": "2", "labels": "", "self_author": False},
+            data={
+                "status": "1",
+                "executor": "2",
+                "labels": "",
+                "self_author": False,
+            },
             follow=True,
         )
         tasks = response.context["tasks"]
@@ -251,7 +279,12 @@ class TasksTest(TestCase):
         # отображение списка задач фильтрация по status, executor, self_author
         response = self.client.get(
             self.list_url,
-            data={"status": "1", "executor": "2", "labels": "", "self_author": True},
+            data={
+                "status": "1",
+                "executor": "2",
+                "labels": "",
+                "self_author": True,
+            },
             follow=True,
         )
         tasks = response.context["tasks"]
@@ -260,7 +293,12 @@ class TasksTest(TestCase):
         # отображение списка задач фильтрация по status, executor, self_author
         response = self.client.get(
             self.list_url,
-            data={"status": "", "executor": "", "labels": "", "self_author": True},
+            data={
+                "status": "",
+                "executor": "",
+                "labels": "",
+                "self_author": True,
+            },
             follow=True,
         )
         tasks = response.context["tasks"]

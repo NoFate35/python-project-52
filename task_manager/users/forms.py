@@ -5,13 +5,25 @@ from django.contrib.auth.models import User
 class RegisterUserForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ["first_name", "last_name", "username", "password1", "password2"]
+        fields = [
+            "first_name",
+            "last_name",
+            "username",
+            "password1",
+            "password2",
+        ]
 
 
 class UpdateUserForm(RegisterUserForm):
     class Meta:
         model = User
-        fields = ["first_name", "last_name", "username", "password1", "password2"]
+        fields = [
+            "first_name",
+            "last_name",
+            "username",
+            "password1",
+            "password2",
+        ]
 
     def clean_username(self):
         username = self.cleaned_data["username"]

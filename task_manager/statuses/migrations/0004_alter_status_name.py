@@ -13,7 +13,9 @@ class Migration(migrations.Migration):
             model_name="status",
             name="name",
             field=models.CharField(
-                error_messages={"unique": "Task status с таким Имя уже существует."},
+                error_messages={
+                    "unique": "Task status с таким Имя уже существует."
+                },
                 max_length=200,
                 unique=True,
             ),

@@ -33,7 +33,9 @@ class UserCreateView(BaseCreateView):
         if form.is_valid():
             form.save()
             messages.add_message(
-                request, messages.SUCCESS, "Пользователь успешно зарегистрирован"
+                request,
+                messages.SUCCESS,
+                "Пользователь успешно зарегистрирован",
             )
             return redirect("login")
         return render(request, "users/create_form.html", {"form": form})

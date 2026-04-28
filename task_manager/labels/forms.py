@@ -26,4 +26,6 @@ class LabelCreateForm(forms.ModelForm):
                 {"class": "form-control is-invalid"}
             )
         if self.instance.pk:
-            self.fields["name"].widget.attrs.update({"class": "form-control is-valid"})
+            self.fields["name"].widget.attrs.update(
+                {"class": "form-control is-valid"}
+            )

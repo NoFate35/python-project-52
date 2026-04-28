@@ -13,10 +13,14 @@ class StatusesTest(TestCase):
         self.labels = Label.objects.all()
         self.label2 = Label.objects.get(pk=2)
         self.label3 = Label.objects.get(pk=3)
-        self.update_url = reverse("labels_update", kwargs={"pk": self.label2.id})
+        self.update_url = reverse(
+            "labels_update", kwargs={"pk": self.label2.id}
+        )
         self.create_url = reverse("labels_create")
         self.list_url = reverse("labels_list")
-        self.delete_url = reverse("labels_delete", kwargs={"pk": self.label3.id})
+        self.delete_url = reverse(
+            "labels_delete", kwargs={"pk": self.label3.id}
+        )
         self.login_url = reverse("login")
 
     def test_fixtures(self):
@@ -48,17 +52,23 @@ class StatusesTest(TestCase):
     def test_label_bad_authentificate_create_update_list_delete(self):
         # отобразить форму создания без аутентификации
         response = self.client.get(self.create_url, follow=True)
-        self.assertContains(response, "Вы не авторизованы! Пожалуйста, выполните вход.")
+        self.assertContains(
+            response, "Вы не авторизованы! Пожалуйста, выполните вход."
+        )
 
         # отправить запрос на создание post без аутентификации
         response = self.client.post(
             self.create_url, data={"name": "label4"}, follow=True
         )
-        self.assertContains(response, "Вы не авторизованы! Пожалуйста, выполните вход.")
+        self.assertContains(
+            response, "Вы не авторизованы! Пожалуйста, выполните вход."
+        )
 
         # отобразить форму изменения без аутентификации
         response = self.client.get(self.update_url, follow=True)
-        self.assertContains(response, "Вы не авторизованы! Пожалуйста, выполните вход.")
+        self.assertContains(
+            response, "Вы не авторизованы! Пожалуйста, выполните вход."
+        )
 
         # отправить запрос на изменение post без аутентификации
         response = self.client.post(
@@ -68,15 +78,21 @@ class StatusesTest(TestCase):
             },
             follow=True,
         )
-        self.assertContains(response, "Вы не авторизованы! Пожалуйста, выполните вход.")
+        self.assertContains(
+            response, "Вы не авторизованы! Пожалуйста, выполните вход."
+        )
 
         # отобразить форму удаления без аутентификации
         response = self.client.get(self.delete_url, follow=True)
-        self.assertContains(response, "Вы не авторизованы! Пожалуйста, выполните вход.")
+        self.assertContains(
+            response, "Вы не авторизованы! Пожалуйста, выполните вход."
+        )
 
         # отправить запрос на удаление post без аутентификации
         response = self.client.post(self.delete_url, follow=True)
-        self.assertContains(response, "Вы не авторизованы! Пожалуйста, выполните вход.")
+        self.assertContains(
+            response, "Вы не авторизованы! Пожалуйста, выполните вход."
+        )
 
     def test_label_bad_unique_create(self):
         # аутентификация

@@ -30,7 +30,9 @@ class LabelCreateView(CustomLoginRequieredMixin, BaseCreateView):
         form = LabelCreateForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.add_message(request, messages.SUCCESS, "Метка успешно создана")
+            messages.add_message(
+                request, messages.SUCCESS, "Метка успешно создана"
+            )
             return redirect("labels_list")
         return render(request, "labels/create_form.html", {"form": form})
 
@@ -46,7 +48,9 @@ class LabelFormUpdateView(CustomLoginRequieredMixin, View):
         form = LabelCreateForm(request.POST, instance=label)
         if form.is_valid():
             form.save()
-            messages.add_message(request, messages.SUCCESS, "Метка успешно изменена")
+            messages.add_message(
+                request, messages.SUCCESS, "Метка успешно изменена"
+            )
             return redirect("labels_list")
         return render(request, "labels/create_form.html", {"form": form})
 
@@ -66,5 +70,7 @@ class LabelDeleteView(CustomLoginRequieredMixin, View):
             )
         else:
             label.delete()
-            messages.add_message(request, messages.SUCCESS, "Метка успешно удалена")
+            messages.add_message(
+                request, messages.SUCCESS, "Метка успешно удалена"
+            )
         return redirect("labels_list")

@@ -13,7 +13,9 @@ class StatusesTest(TestCase):
         self.statuses = Status.objects.all()
         self.status2 = Status.objects.get(pk=2)
         self.status3 = Status.objects.get(pk=3)
-        self.update_url = reverse("statuses_update", kwargs={"pk": self.status2.id})
+        self.update_url = reverse(
+            "statuses_update", kwargs={"pk": self.status2.id}
+        )
         self.create_url = reverse("statuses_create")
         self.list_url = reverse("statuses_list")
         self.login_url = reverse("login")
@@ -47,13 +49,17 @@ class StatusesTest(TestCase):
     def test_status_bad_authentificate_create(self):
         # отобразить форму без аутентификации
         response = self.client.get(self.create_url, follow=True)
-        self.assertContains(response, "Вы не авторизованы! Пожалуйста, выполните вход.")
+        self.assertContains(
+            response, "Вы не авторизованы! Пожалуйста, выполните вход."
+        )
 
         # отправить запрос post без аутентификации
         response = self.client.post(
             self.create_url, follow=True, data={"name": "status4"}
         )
-        self.assertContains(response, "Вы не авторизованы! Пожалуйста, выполните вход.")
+        self.assertContains(
+            response, "Вы не авторизованы! Пожалуйста, выполните вход."
+        )
 
     def test_status_bad_unique_create(self):
         # аутентификация
@@ -96,13 +102,17 @@ class StatusesTest(TestCase):
     def test_status_bad_authentificate_update(self):
         # отобразить форму без аутентификации
         response = self.client.get(self.update_url, follow=True)
-        self.assertContains(response, "Вы не авторизованы! Пожалуйста, выполните вход.")
+        self.assertContains(
+            response, "Вы не авторизованы! Пожалуйста, выполните вход."
+        )
 
         # отправить post запрос на обновление без аутентификации
         response = self.client.post(
             self.update_url, follow=True, data={"name": self.status2.name + "!"}
         )
-        self.assertContains(response, "Вы не авторизованы! Пожалуйста, выполните вход.")
+        self.assertContains(
+            response, "Вы не авторизованы! Пожалуйста, выполните вход."
+        )
 
     def test_status_bad_unique_update(self):
         # аутентификация

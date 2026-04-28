@@ -31,7 +31,10 @@ class Migration(migrations.Migration):
                         unique=True,
                     ),
                 ),
-                ("created_at", models.DateTimeField(auto_now_add=True, null=True)),
+                (
+                    "created_at",
+                    models.DateTimeField(auto_now_add=True, null=True),
+                ),
             ],
         ),
     ]

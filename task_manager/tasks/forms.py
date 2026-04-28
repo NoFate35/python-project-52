@@ -9,7 +9,9 @@ class TaskCreateForm(forms.ModelForm):
     description = forms.CharField(
         widget=forms.Textarea, required=False, label="Описание"
     )
-    status = forms.ModelChoiceField(queryset=Status.objects.all(), label="Статус")
+    status = forms.ModelChoiceField(
+        queryset=Status.objects.all(), label="Статус"
+    )
     executor = forms.ModelChoiceField(
         queryset=User.objects.all(), label="Исполнитель", required=False
     )
@@ -68,4 +70,6 @@ class TaskFilterForm(forms.ModelForm):
         self.fields["status"].widget.attrs.update({"class": "form-select"})
         self.fields["executor"].widget.attrs.update({"class": "form-select"})
         self.fields["labels"].widget.attrs.update({"class": "form-select"})
-        self.fields["self_author"].widget.attrs.update({"class": "form-check-input"})
+        self.fields["self_author"].widget.attrs.update(
+            {"class": "form-check-input"}
+        )

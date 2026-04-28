@@ -19,7 +19,9 @@ class UsersTest(TestCase):
     def test_bad_login(self):
         # неправильный логин
         response = self.client.post(
-            self.login_url, follow=True, data={"username": "rrrh", "password": "1234"}
+            self.login_url,
+            follow=True,
+            data={"username": "rrrh", "password": "1234"},
         )
         self.assertContains(
             response,
@@ -34,7 +36,9 @@ class UsersTest(TestCase):
 
         # post запрос на вход с правильным логином
         response = self.client.post(
-            self.login_url, follow=True, data={"username": "rrr", "password": "1234"}
+            self.login_url,
+            follow=True,
+            data={"username": "rrr", "password": "1234"},
         )
         self.assertContains(response, "Вы залогинены")
 

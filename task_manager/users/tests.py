@@ -94,7 +94,9 @@ class UsersTest(TestCase):
                 "password2": "123",
             },
         )
-        self.assertContains(response, "Вы не авторизованы! Пожалуйста, выполните вход.")
+        self.assertContains(
+            response, "Вы не авторизованы! Пожалуйста, выполните вход."
+        )
 
         # логин под пользователем №1
         self.make_login(self.user1)
@@ -159,7 +161,8 @@ class UsersTest(TestCase):
         # post запрос на удаление пользователя который задействован
         response = self.client.post(delete_url, follow=True)
         self.assertContains(
-            response, "Невозможно удалить пользователя, потому что он используется"
+            response,
+            "Невозможно удалить пользователя, потому что он используется",
         )
 
     def test_user_good_delete(self):

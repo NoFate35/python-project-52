@@ -29,7 +29,8 @@ urlpatterns = [
     path("tasks/", include("task_manager.tasks.urls")),
     path("admin/", admin.site.urls),
     path(
-        "favicon.ico", RedirectView.as_view(url=staticfiles_storage.url("favicon.ico"))
+        "favicon.ico",
+        RedirectView.as_view(url=staticfiles_storage.url("favicon.ico")),
     ),
     path("login/", views.LoginUserView.as_view(), name="login"),
     path("logout/", views.logout_view, name="logout"),

@@ -31,7 +31,9 @@ class StatusCreateView(CustomLoginRequieredMixin, BaseCreateView):
         form = StatusCreateForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.add_message(request, messages.SUCCESS, "Статус успешно создан")
+            messages.add_message(
+                request, messages.SUCCESS, "Статус успешно создан"
+            )
             return redirect("statuses_list")
         return render(request, "statuses/create_form.html", {"form": form})
 
@@ -47,7 +49,9 @@ class StatusFormUpdateView(CustomLoginRequieredMixin, View):
         form = StatusCreateForm(request.POST, instance=status)
         if form.is_valid():
             form.save()
-            messages.add_message(request, messages.SUCCESS, "Статус успешно изменен")
+            messages.add_message(
+                request, messages.SUCCESS, "Статус успешно изменен"
+            )
             return redirect("statuses_list")
         return render(request, "statuses/create_form.html", {"form": form})
 
@@ -62,7 +66,9 @@ class StatusDeleteView(CustomLoginRequieredMixin, View):
         if status:
             try:
                 status.delete()
-                messages.add_message(request, messages.SUCCESS, "Статус успешно удален")
+                messages.add_message(
+                    request, messages.SUCCESS, "Статус успешно удален"
+                )
             except ProtectedError:
                 messages.add_message(
                     request,
