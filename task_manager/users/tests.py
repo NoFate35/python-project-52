@@ -124,9 +124,13 @@ class UsersTest(TestCase):
                 "password2": "12",
             },
         )
+        message = (
+            "Введённый пароль слишком короткий."
+            " Он должен состоять из как минимум 3 символа."
+        )
         self.assertContains(
             response,
-            "Введённый пароль слишком короткий. Он должен состоять из как минимум 3 символа.",
+            message,
         )
 
     def test_user_update(self):

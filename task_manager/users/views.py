@@ -85,9 +85,13 @@ class UserDeleteView(CustomLoginRequieredMixin, UserPassesTestMixin, View):
                     request, messages.SUCCESS, "Пользователь успешно удален"
                 )
             except ProtectedError:
+                message = (
+                    "Невозможно удалить пользователя,"
+                    " потому что он используется"
+                )
                 messages.add_message(
                     request,
                     messages.ERROR,
-                    "Невозможно удалить пользователя, потому что он используется",
+                    message,
                 )
             return redirect("users_list")

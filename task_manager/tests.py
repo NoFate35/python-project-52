@@ -23,9 +23,14 @@ class UsersTest(TestCase):
             follow=True,
             data={"username": "rrrh", "password": "1234"},
         )
+        message = (
+            "Пожалуйста, введите правильные имя пользователя и пароль."
+            " Оба поля могут быть чувствительны к регистру."
+        )
+
         self.assertContains(
             response,
-            "Пожалуйста, введите правильные имя пользователя и пароль. Оба поля могут быть чувствительны к регистру.",
+            message,
         )
 
     def test_good_login(self):

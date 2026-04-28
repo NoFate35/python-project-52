@@ -1,1 +1,3 @@
 line-length = 80
+lint.select = ["E501"]
+exclude = ["task_manager/settings.py"]
