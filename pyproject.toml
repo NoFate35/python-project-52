@@ -10,6 +10,7 @@ dependencies = [
     "django-bootstrap5>=25.3",
     "gunicorn>=23.0.0",
     "psycopg2-binary>=2.9.11",
+    "pytest-cov>=7.1.0",
     "python-dotenv>=1.2.1",
     "ruff>=0.15.11",
     "whitenoise>=6.11.0",
