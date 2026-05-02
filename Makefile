@@ -17,5 +17,6 @@ start:
 	sudo service postgresql start
 	uv run manage.py runserver
 test:
-
 	uv run python3 manage.py test task_manager
+test-cov:
+	uv run pytest --cov=task_manager */tests.py --cov-report=xml:coverage-reports/coverage.xml
