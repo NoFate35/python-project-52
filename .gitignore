@@ -3,7 +3,6 @@
 dist/
 *.pyc
 .venv
-.coverage
 *_cache/
 .env
 __pycache__/
