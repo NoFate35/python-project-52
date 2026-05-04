@@ -16,14 +16,14 @@ The link to this training project will be available for 25 days, starting from 2
 ### Purpose
 Practicing database management and website development using the django framework
 ### Description
-<a href="https://python-project-52-4mns.onrender.com">Task manager</a> – this is a task management, similar to <a href="http://www.redmine.org">Remine</a>:It allows you to set tasks, assign executors, and change their statuses. Registration and authentication are required to use the system.
+<a href="https://python-project-52-4mns.onrender.com">Task manager</a> – this is a task management, similar to <a href="http://www.redmine.org">Remine</a>: It allows you to set tasks, assign executors, and change their statuses. Registration and authentication are required to use the system.
 
 ### Installation
 To work with the project must be installed:
 * the __uv__ project manager;
-* __postgresql__ with "py_flaskdb" database whith no password;
+* __postgresql__ database;
 
-__.env__ file consist of:
+__.env__ file consist of (like):
 ```
 DATABASE_URL = 'postgresql:///py_flaskdb'
 SECRET_KEY = 'verysecretkeyyy'
@@ -32,7 +32,7 @@ ALLOWED_HOSTS = 'webserver, localhost'
 then:
 ```
 git clone https://github.com/NoFate35/python-project-52.git
-cd python-project-83
+cd python-project-52
 make install
 make migrate
 make test
