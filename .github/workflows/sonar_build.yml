@@ -21,7 +21,9 @@ jobs:
           pip install uv
           make install
       - name: Run tox
-        run: uv run coverage xml
+        run: |
+          uv run python3 manage.py test task_manager
+          uv run coverage xml
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@fd88b7d7ccbaefd23d8f36f73b59db7a3d246602 # v6.0.0
         env:
