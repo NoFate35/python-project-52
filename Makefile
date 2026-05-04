@@ -19,4 +19,4 @@ start:
 test:
 	uv run python3 manage.py test task_manager
 test-cov:
-	uv run coverage report
+	uv run coverage xml
