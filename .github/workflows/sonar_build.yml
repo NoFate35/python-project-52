@@ -9,12 +9,18 @@ jobs:
   sonarqube:
     name: SonarQube
     runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+    steps:
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      - name: Install tox and any other packages
-        run: uv add pytest-cov
+      - name: Install dependencies
+        run: |
+          pip install uv
+          make install
       - name: Run tox
         run: uv run coverage xml
       - name: SonarQube Scan
