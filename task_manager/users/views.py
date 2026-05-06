@@ -6,8 +6,7 @@ from django.views import View
 from .forms import RegisterUserForm, UpdateUserForm
 from django.contrib import messages
 from django.db.models.deletion import ProtectedError
-from task_manager.mixins.login import CustomLoginRequieredMixin
-from django.contrib.auth.mixins import UserPassesTestMixin
+from task_manager.mixins.user_pass import CustomUserPassesTestMixin
 
 
 class UserListView(ListView):
@@ -41,7 +40,7 @@ class UserCreateView(BaseCreateView):
         return render(request, "users/create_form.html", {"form": form})
 
 
-class UserFormUpdateView(CustomLoginRequieredMixin, View):
+class UserFormUpdateView(CustomUserPassesTestMixin, View):
     def get(self, request, *args, **kwargs):
         user = get_object_or_404(User, pk=kwargs["pk"])
         form = UpdateUserForm(instance=user)
@@ -59,19 +58,7 @@ class UserFormUpdateView(CustomLoginRequieredMixin, View):
         return render(request, "users/create_form.html", {"form": form})
 
 
-class UserDeleteView(CustomLoginRequieredMixin, UserPassesTestMixin, View):
-    def test_func(self):
-        user = get_object_or_404(User, pk=self.kwargs["pk"])
-        return self.request.user == user
-
-    def handle_no_permission(self):
-        messages.add_message(
-            self.request,
-            messages.ERROR,
-            "У вас нет прав для изменения другого пользователя.",
-        )
-        return redirect("users_list")
-
+class UserDeleteView(CustomUserPassesTestMixin, View):
     def get(self, request, *args, **kwargs):
         user = get_object_or_404(User, pk=kwargs["pk"])
         return render(request, "users/delete.html", {"user": user})
