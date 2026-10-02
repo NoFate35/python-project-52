@@ -21,22 +21,14 @@ Practicing database management and website development using the django framewor
 ### Installation
 To work with the project must be installed:
 * the __uv__ project manager;
-* __postgresql__ database;
-
-__.env__ file consist of (like):
-```
-DATABASE_URL = 'postgresql:///py_flaskdb'
-SECRET_KEY = 'verysecretkeyyy'
-ALLOWED_HOSTS = 'webserver, localhost'
-```
-then:
+* __postgresql__ database; (For the easy of support for the educational project, the PostgreSQL database has been replaced with SQLite. Now, no database pre‑configuration is required.)
 ```
 git clone https://github.com/NoFate35/python-project-52.git
 cd python-project-52
 printf "DATABASE_URL = 'sqlite:///'\nSECRET_KEY = 'verysecretkeyyy'\nALLOWED_HOSTS = '127.0.0.1'\nDEBUG=True" >> .env
 make install
 make migrate
-make test
+make start
 ```
 
 
