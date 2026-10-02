@@ -33,6 +33,7 @@ then:
 ```
 git clone https://github.com/NoFate35/python-project-52.git
 cd python-project-52
+printf "DATABASE_URL = 'sqlite:///'\nSECRET_KEY = 'verysecretkeyyy'\nALLOWED_HOSTS = '127.0.0.1'\nDEBUG=True" >> .env
 make install
 make migrate
 make test
