@@ -25,7 +25,7 @@ To work with the project must be installed:
 ```
 git clone https://github.com/NoFate35/python-project-52.git
 cd python-project-52
-printf "DATABASE_URL = 'sqlite://?cache=shared'\nSECRET_KEY = 'verysecretkeyyy'\nALLOWED_HOSTS = '127.0.0.1'\nDEBUG=True" >> .env
+printf "DATABASE_URL = 'sqlite:///test_db.sqlite3'\nSECRET_KEY = 'verysecretkeyyy'\nALLOWED_HOSTS = '127.0.0.1'\nDEBUG=True" >> .env
 make install
 make migrate
 make start
