@@ -30,6 +30,3 @@ make install
 make migrate
 make start
 ```
-
-
-
