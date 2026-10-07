@@ -12,11 +12,11 @@
 
 
 # About project
-The link to this training project will be available for 25 days, starting from 20/04/2026: <a href="https://python-project-52-4mns.onrender.com">Task manager</a>
+<a href="https://python-project-52-4mns.onrender.com">Task manager</a>
 ### Purpose
 Practicing database management and website development using the django framework
 ### Description
-<a href="https://python-project-52-4mns.onrender.com">Task manager</a> – this is a task management, similar to <a href="http://www.redmine.org">Remine</a>: It allows you to set tasks, assign executors, and change their statuses. Registration and authentication are required to use the system.
+<a href="https://python-project-52-4mns.onrender.com">Task manager</a> – this is a task management, similar to <a href="http://www.redmine.org">Remine</a>: It allows you to set tasks, assign executors, and change their statuses. Registration and authentication are required to use the system. The project was originally designed to work with a PostgreSQL database and was later adapted for SQLite to simplify maintenance.
 
 ### Installation
 To work with the project must be installed:
